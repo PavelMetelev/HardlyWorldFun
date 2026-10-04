@@ -11,11 +11,11 @@ import {
   Info,
   Menu,
   MessageSquare,
-  UserCheck,
   Search,
   ShieldAlert,
   Swords,
   X,
+  UserCheck,
   Zap,
   Crown,
 } from "lucide-react";
@@ -111,9 +111,9 @@ const RULES_DATA: Section[] = [
       },
       {
         id: '3.2.2',
-        text: 'Запрещено пользоваться всем, что упрощает процесс игры.',
+        text: '🔹 Запрещено пользоваться всем, что упрощает процесс игры.',
         punishment: 'бан на 90 дней',
-        note: 'Под действие пункта попадают любые программы, модификации и средства, которые упрощают игровой процесс или дают игроку дополнительное преимущество.'
+        note: 'Запрещено пользоваться любыми средствами, которые дают упрощение игрового процесса или преимущества в игре.'
       },
       {
         id: '3.3',
@@ -123,7 +123,7 @@ const RULES_DATA: Section[] = [
       {
         id: '3.4',
         text: 'Использование недоработок сервера/Дюпов/багов.',
-        punishment: 'бан на 7 дней',
+        punishment: 'бан по айпи на 7 дней',
         note: 'Багоюз киркой также карается баном.'
       },
       {
@@ -638,22 +638,14 @@ export default function App() {
           </button>
 
           <nav className="hidden items-center gap-1 md:flex">
-            <button key="home" onClick={() => scrollTo("home")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "home" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>
-              Главная
-            </button>
-            <a href={STORE_URL} target="_blank" rel="noopener noreferrer" aria-label="Открыть магазин HardlyWorld" className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-white">
-              Магазин
-            </a>
-            <button key="mods" onClick={() => scrollTo("mods")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "mods" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>
-              Моды
-            </button>
-            <button onClick={() => scrollTo("rules")} className={`ml-1 rounded-lg bg-white/[0.06] px-3 py-2 text-sm font-bold text-white transition hover:bg-white/[0.12] ${active === "rules" ? "ring-1 ring-white/10" : ""}`}>
-              Правила
-            </button>
+            <button onClick={() => scrollTo("home")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "home" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>Главная</button>
+            <a href={STORE_URL} className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-white">Магазин</a>
+            <button onClick={() => scrollTo("mods")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "mods" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>Моды</button>
+            <button onClick={() => scrollTo("rules")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "rules" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>Правила</button>
           </nav>
 
           <div className="hidden items-center gap-2 sm:flex">
-            <a href={VK_URL} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">VK</a>
+            <a href={VK_URL} target="_blank" rel="noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">VK</a>
           </div>
 
           <button onClick={() => setMenuOpen(v => !v)} className="rounded-xl border border-white/10 p-2 text-slate-300 sm:hidden">
@@ -663,14 +655,10 @@ export default function App() {
         <AnimatePresence>
           {menuOpen && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="border-t border-white/[0.06] bg-[#07090d] px-4 py-3 sm:hidden">
-              <button onClick={() => scrollTo("home")} className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">Главная</button>
-              <a href={STORE_URL} target="_blank" rel="noopener noreferrer" aria-label="Открыть магазин HardlyWorld" className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">
-                Магазин
-              </a>
-              <button onClick={() => scrollTo("mods")} className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">Моды</button>
-              <button onClick={() => scrollTo("rules")} className="mt-1 block w-full rounded-lg bg-white/[0.06] px-3 py-3 text-left text-sm font-bold text-white hover:bg-white/[0.1]">
-                Правила
-              </button>
+              {[['home', 'Главная'], ['mods', 'Моды'], ['rules', 'Правила']].map(([id, label]) => (
+                <button key={id} onClick={() => scrollTo(id)} className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">{label}</button>
+              ))}
+              <a href={STORE_URL} onClick={() => setMenuOpen(false)} className="mt-1 block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">Магазин</a>
             </motion.div>
           )}
         </AnimatePresence>
@@ -693,8 +681,11 @@ export default function App() {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <button onClick={() => scrollTo("rules")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-black text-black transition hover:bg-slate-200">
-                  Правила <ArrowRight className="h-4 w-4" />
+                <a href={STORE_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-black text-black transition hover:bg-slate-200">
+                  Магазин <ArrowRight className="h-4 w-4" />
+                </a>
+                <button onClick={() => scrollTo("rules")} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-white transition hover:bg-white/[0.08]">
+                  Правила <ArrowRight className="h-4 w-4 text-slate-500" />
                 </button>
               </div>
             </div>
@@ -711,7 +702,7 @@ export default function App() {
                 <div className="mb-5 text-sm text-slate-600">Minecraft · {SERVER_MODE}</div>
                 <div className="flex flex-wrap gap-2">
                   <CopyButton value={SERVER_IP} />
-                  <a href={STORE_URL} target="_blank" rel="noopener noreferrer" aria-label="Открыть магазин HardlyWorld" className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">Магазин</a>
+                  <a href={STORE_URL} className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">Магазин</a>
                 </div>
               </div>
             </div>
@@ -768,8 +759,8 @@ export default function App() {
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between md:px-6">
           <div>© {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}</div>
           <div className="flex flex-wrap gap-4">
-            <a href={VK_URL} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">VK</a>
-            <a href={STORE_URL} target="_blank" rel="noopener noreferrer" aria-label="Открыть магазин HardlyWorld" className="transition hover:text-white">Магазин</a>
+            <a href={VK_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">VK</a>
+            <a href={STORE_URL} className="transition hover:text-white">Магазин</a>
           </div>
         </div>
       </footer>
