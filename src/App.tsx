@@ -75,8 +75,8 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
   ] as const;
 
   return (
-    <section id="start" className="scroll-mt-28 rounded-[2rem] border border-white/[0.09] bg-transparent p-5 md:p-7">
-      <div className="relative z-30 mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <section id="start" className="portal-frame scroll-mt-28 rounded-[2rem] p-5 md:p-7">
+      <div className="relative z-30 mb-7 flex items-center justify-between gap-4 flex-col md:flex-row md:items-end">
         <div>
           <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-300">Быстрый старт</div>
           <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Как начать играть</h2>
@@ -89,7 +89,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
 
       <div className="relative z-20 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map(([num, title, text], index) => (
-          <div key={num} className="relative rounded-2xl border border-white/[0.10] bg-transparent p-5">
+          <div key={num} className="portal-card relative rounded-2xl border border-white/[0.12] bg-transparent p-5">
             {index < steps.length - 1 && (
               <div className="absolute right-[-13px] top-1/2 z-10 hidden h-px w-6 bg-white/[0.08] lg:block" aria-hidden="true" />
             )}
@@ -535,7 +535,7 @@ function RulesExplorer() {
   }, []);
 
   return (
-    <section id="rules" className="content-surface scroll-mt-28 rounded-[2rem]">
+    <section id="rules" className="content-surface portal-frame scroll-mt-28 rounded-[2rem]">
       <div className="mb-8 max-w-3xl">
         <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-300">
           <BookOpen className="h-3.5 w-3.5" /> Регламент проекта
@@ -914,7 +914,7 @@ function ModsExplorer() {
   };
 
   return (
-    <section id="mods" className="content-surface scroll-mt-28 rounded-[2rem]">
+    <section id="mods" className="content-surface portal-frame scroll-mt-28 rounded-[2rem]">
       <div className="mb-8 max-w-3xl">
         <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-300">
           <Zap className="h-3.5 w-3.5" /> Проверка модификаций
