@@ -1,0 +1,100 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="sky" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#071426"/>
+    <stop offset=".46" stop-color="#102A4A"/>
+    <stop offset="1" stop-color="#101318"/>
+  </linearGradient>
+  <linearGradient id="sunset" x1="850" y1="540" x2="1340" y2="800" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#F59E0B" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#EF4444" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="water" x1="800" y1="650" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#0D3041"/>
+    <stop offset="1" stop-color="#061018"/>
+  </linearGradient>
+  <linearGradient id="logo" x1="480" y1="260" x2="1150" y2="430" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FFFFFF"/>
+    <stop offset=".48" stop-color="#D6F2FF"/>
+    <stop offset=".72" stop-color="#60B8FF"/>
+    <stop offset="1" stop-color="#3B82F6"/>
+  </linearGradient>
+  <linearGradient id="glow" x1="800" y1="300" x2="800" y2="650" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#7DD3FC" stop-opacity=".28"/>
+    <stop offset="1" stop-color="#0EA5E9" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="blur"><feGaussianBlur stdDeviation="35"/></filter>
+  <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000" flood-opacity=".55"/></filter>
+  <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+    <path d="M44 0H0V44" stroke="#fff" stroke-opacity=".055"/>
+  </pattern>
+</defs>
+
+<rect width="1600" height="900" fill="url(#sky)"/>
+<circle cx="1180" cy="500" r="250" fill="#F97316" opacity=".16" filter="url(#blur)"/>
+<circle cx="340" cy="270" r="180" fill="#38BDF8" opacity=".10" filter="url(#blur)"/>
+<ellipse cx="1150" cy="570" rx="270" ry="130" fill="url(#sunset)" filter="url(#blur)"/>
+
+<!-- stars -->
+<g fill="#DFF6FF" opacity=".72">
+  <circle cx="110" cy="130" r="2"/><circle cx="180" cy="85" r="1.7"/><circle cx="265" cy="170" r="1.5"/>
+  <circle cx="390" cy="90" r="1.4"/><circle cx="510" cy="150" r="1.8"/><circle cx="620" cy="75" r="1.4"/>
+  <circle cx="755" cy="145" r="1.6"/><circle cx="890" cy="84" r="1.5"/><circle cx="1020" cy="140" r="1.8"/>
+  <circle cx="1290" cy="100" r="1.6"/><circle cx="1420" cy="180" r="1.5"/><circle cx="1500" cy="90" r="1.6"/>
+</g>
+
+<!-- distant mountains -->
+<path d="M0 620L160 480L270 570L420 390L560 560L710 360L860 590L1000 420L1160 550L1300 380L1430 520L1600 410V900H0V620Z" fill="#0B1B2C"/>
+<path d="M0 675L180 530L310 625L480 470L640 620L800 445L940 625L1120 470L1260 610L1420 455L1600 570V900H0V675Z" fill="#10263A"/>
+
+<!-- cliffs / village -->
+<g opacity=".98">
+  <path d="M0 610L260 545L430 640L520 570L700 655L780 590V900H0V610Z" fill="#0C141B"/>
+  <path d="M980 610L1140 540L1290 640L1420 560L1600 620V900H980V610Z" fill="#0A1218"/>
+  <g fill="#16232B">
+    <rect x="82" y="600" width="82" height="150" rx="5"/><rect x="190" y="575" width="74" height="175" rx="5"/>
+    <rect x="294" y="620" width="94" height="130" rx="5"/><rect x="1104" y="602" width="100" height="148" rx="5"/>
+    <rect x="1240" y="575" width="78" height="175" rx="5"/><rect x="1352" y="620" width="120" height="130" rx="5"/>
+  </g>
+  <g fill="#F8C96A">
+    <rect x="107" y="636" width="18" height="28"/><rect x="214" y="612" width="18" height="28"/><rect x="319" y="657" width="18" height="28"/>
+    <rect x="1129" y="637" width="18" height="28"/><rect x="1264" y="612" width="18" height="28"/><rect x="1385" y="657" width="18" height="28"/>
+  </g>
+</g>
+
+<!-- floating islands -->
+<g opacity=".96">
+  <path d="M1150 245L1230 205L1300 232L1270 285L1210 302L1165 286L1130 265Z" fill="#203342"/>
+  <path d="M1200 290L1280 282L1260 330L1215 342L1170 326Z" fill="#0F1A21"/>
+  <rect x="1168" y="235" width="16" height="32" rx="3" fill="#F8C96A"/><rect x="1280" y="238" width="16" height="28" rx="3" fill="#F8C96A"/>
+  <path d="M1400 330L1470 300L1540 325L1510 372L1450 392L1396 370Z" fill="#243A48"/>
+  <path d="M1450 382L1520 378L1508 426L1460 438L1423 418Z" fill="#111C23"/>
+</g>
+
+<!-- water -->
+<path d="M0 690C250 650 430 730 690 695C950 660 1190 685 1600 650V900H0V690Z" fill="url(#water)"/>
+<path d="M0 748C260 710 490 790 750 740C1060 682 1310 755 1600 710" stroke="#5EEBFF" stroke-opacity=".14" stroke-width="7"/>
+<path d="M0 810C300 760 570 840 850 790C1100 748 1320 830 1600 780" stroke="#7DD3FC" stroke-opacity=".08" stroke-width="5"/>
+
+<!-- main glowing backdrop -->
+<ellipse cx="800" cy="420" rx="430" ry="280" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+  <rect x="430" y="285" width="740" height="265" rx="28" fill="#050A12" fill-opacity=".64" stroke="#9DDCFF" stroke-opacity=".20"/>
+</g>
+
+<!-- logo -->
+<text x="800" y="390" text-anchor="middle" fill="url(#logo)" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="900" letter-spacing="-5">HARDLYWORLD</text>
+<text x="800" y="460" text-anchor="middle" fill="#FDBA74" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="900" letter-spacing="8">АНАРХИЯ</text>
+<rect x="566" y="490" width="468" height="58" rx="16" fill="#071018" stroke="#67E8F9" stroke-opacity=".34"/>
+<text x="800" y="529" text-anchor="middle" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800">mc.HardlyWorld.fun</text>
+
+<!-- foreground blocks -->
+<g>
+  <rect x="50" y="735" width="170" height="170" fill="#16252C"/>
+  <rect x="220" y="770" width="125" height="130" fill="#1C2F37"/>
+  <rect x="1380" y="745" width="170" height="155" fill="#17272F"/>
+  <rect x="1240" y="785" width="140" height="115" fill="#1C3039"/>
+</g>
+<rect width="1600" height="900" fill="url(#grid)"/>
+<rect width="1600" height="900" fill="url(#sky)" opacity=".18"/>
+</svg>
