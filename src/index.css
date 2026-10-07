@@ -117,3 +117,53 @@ input::placeholder {
 .site-main .text-amber-300 {
   color: #fde68a !important;
 }
+
+
+/* Readable surfaces for long-form content over the scenic background. */
+.content-surface {
+  position: relative;
+  padding: 2rem;
+  background: rgba(5, 9, 15, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.content-surface,
+.content-surface h1,
+.content-surface h2,
+.content-surface h3,
+.content-surface h4,
+.content-surface p,
+.content-surface span,
+.content-surface strong,
+.content-surface button,
+.content-surface a,
+.content-surface label {
+  opacity: 1 !important;
+}
+
+.content-surface h1,
+.content-surface h2,
+.content-surface h3,
+.content-surface h4 {
+  color: #ffffff !important;
+}
+
+.content-surface p {
+  color: #e2e8f0 !important;
+}
+
+.content-surface .text-slate-300,
+.content-surface .text-slate-400,
+.content-surface .text-slate-500,
+.content-surface .text-slate-600,
+.content-surface .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+@media (max-width: 767px) {
+  .content-surface {
+    padding: 1rem;
+    border-radius: 1.5rem;
+  }
+}
