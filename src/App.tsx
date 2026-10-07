@@ -1222,7 +1222,7 @@ export default function App() {
       <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
         <section id="home" className="relative isolate scroll-mt-28">
           <div className="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden rounded-b-[2.5rem]" aria-hidden="true">
-            <div className="mx-auto aspect-[16/9] w-full max-w-[1920px]">
+            <div className="relative mx-auto aspect-[16/9] w-full max-w-[1920px]">
               <img
                 src="/hardlyworld-bg.png?v=2"
                 alt=""
@@ -1302,7 +1302,6 @@ export default function App() {
 
         <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <GettingStarted onNavigate={scrollTo} />
-        <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <RulesExplorer />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
