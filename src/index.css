@@ -123,9 +123,9 @@ input::placeholder {
 .content-surface {
   position: relative;
   padding: 2rem;
-  background: rgba(5, 9, 15, 0.94);
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  box-shadow: none;
 }
 
 .content-surface,
