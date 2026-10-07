@@ -1,4 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 0 440 320" width="320" height="320">
-  <rect width="440" height="320" fill="transparent"/>
-  <image href="/hardlyworld-logo.svg" x="-60" y="0" width="560" height="320" preserveAspectRatio="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+  <linearGradient id="bg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#2A0B10"/><stop offset=".5" stop-color="#0D0F15"/><stop offset="1" stop-color="#05070B"/>
+  </linearGradient>
+  <linearGradient id="edge" x1="11" y1="7" x2="53" y2="58" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FF9A7A"/><stop offset=".35" stop-color="#FF3E21"/><stop offset="1" stop-color="#A3130A"/>
+  </linearGradient>
+  <linearGradient id="steel" x1="17" y1="18" x2="48" y2="50" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#F4F6F8"/><stop offset=".25" stop-color="#7E8790"/><stop offset=".55" stop-color="#252B32"/><stop offset="1" stop-color="#C3CAD0"/>
+  </linearGradient>
+  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="2.1" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<!-- red aura -->
+<circle cx="32" cy="31" r="28" fill="#F02B16" opacity=".18" filter="url(#glow)"/>
+
+<!-- shield -->
+<path d="M32 3L53 11V29C53 44 44 54 32 61C20 54 11 44 11 29V11L32 3Z"
+  fill="url(#bg)" stroke="url(#edge)" stroke-width="2.6"/>
+
+<!-- inner bevel -->
+<path d="M32 8L48 14V29C48 40 41 49 32 55C23 49 16 40 16 29V14L32 8Z"
+  fill="#0B0F15" stroke="#FF4A2A" stroke-opacity=".38" stroke-width="1"/>
+
+<!-- crown -->
+<path d="M21 19L24 13L29 17L32 10L35 17L40 13L43 19L39 22H25L21 19Z"
+  fill="url(#steel)" stroke="url(#edge)" stroke-width="1.3"/>
+<path d="M30.7 12.7L32 10L33.3 12.7L32 14.5Z" fill="#FF6545" filter="url(#glow)"/>
+
+<!-- HW monogram -->
+<path d="M18 24H23V40H27V24H32V43H27L23 47H18V24Z" fill="url(#steel)" stroke="url(#edge)" stroke-width="1.1" paint-order="stroke"/>
+<path d="M32 24H37V29L41 24H46L40 33L46 43H41L37 37V43H32V24Z" fill="url(#steel)" stroke="url(#edge)" stroke-width="1.1" paint-order="stroke"/>
+
+<!-- molten slash -->
+<path d="M19 45L45 20" stroke="#FF5B38" stroke-width="1.5" stroke-linecap="round" opacity=".9" filter="url(#glow)"/>
+
+<!-- sparks -->
+<g fill="#FF6B43">
+ <circle cx="12" cy="20" r="1"/><circle cx="52" cy="22" r=".8"/><circle cx="17" cy="51" r=".8"/><circle cx="48" cy="50" r="1"/>
+</g>
 </svg>
