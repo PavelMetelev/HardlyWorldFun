@@ -1117,19 +1117,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden contain-paint" aria-hidden="true">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden [contain:paint]" aria-hidden="true">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-[0.34]"
+          style={{ backgroundImage: "url('/hardlyworld-bg.svg')" }}
+        />
+        <div className="absolute inset-0 bg-[#07090d]/55" />
         <div className="absolute left-1/2 top-[-22rem] h-[42rem] w-[70rem] -translate-x-1/2 rounded-full bg-red-500/[0.06] blur-3xl" />
         <div className="absolute left-[-10rem] top-1/3 h-80 w-80 rounded-full bg-orange-500/[0.035] blur-3xl" />
         <div className="absolute right-[-8rem] bottom-0 h-96 w-96 rounded-full bg-emerald-500/[0.03] blur-3xl" />
-        <div
-          className="absolute inset-0 opacity-[0.055]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
-          }}
-        />
-        <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-black/20 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-black/30 to-transparent" />
       </div>
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
@@ -1201,7 +1198,7 @@ export default function App() {
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-white/[0.06] bg-[#07090d] px-4 py-3 sm:hidden"
             >
-              {[["home", "Главная"], ["rules", "Правила"], ["mods", "Моды"]].map(([id, label]) => (
+              {[["home", "Главная"], ["start", "Как играть"], ["rules", "Правила"], ["mods", "Моды"]].map(([id, label]) => (
                 <button
                   key={id}
                   onClick={() => scrollTo(id)}
@@ -1280,6 +1277,16 @@ export default function App() {
             </div>
 
             <ServerStatusCard />
+          </div>
+
+          <div className="mt-10 overflow-hidden rounded-[2rem] border border-white/[0.08] bg-black/30 shadow-2xl shadow-black/30">
+            <img
+              src="/hardlyworld-hero.svg"
+              alt="HardlyWorld — Анархия, mc.HardlyWorld.fun, Minecraft 1.21.4"
+              loading="eager"
+              decoding="async"
+              className="block h-auto w-full"
+            />
           </div>
 
           <div className="mt-12 grid gap-3 sm:grid-cols-3">
