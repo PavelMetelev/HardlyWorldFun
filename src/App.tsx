@@ -1119,11 +1119,11 @@ export default function App() {
     <div className="min-h-screen bg-[#07090d] text-white">
       <div className="pointer-events-none fixed inset-0 overflow-hidden [contain:paint]" aria-hidden="true">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.34]"
+          className="absolute inset-0 bg-cover bg-center opacity-[0.72]"
           style={{ backgroundImage: "url('/hardlyworld-bg.svg')" }}
         />
-        <div className="absolute inset-0 bg-[#07090d]/55" />
-        <div className="absolute left-1/2 top-[-22rem] h-[42rem] w-[70rem] -translate-x-1/2 rounded-full bg-red-500/[0.06] blur-3xl" />
+        <div className="absolute inset-0 bg-[#07090d]/18" />
+        <div className="absolute left-1/2 top-[-22rem] h-[42rem] w-[70rem] -translate-x-1/2 rounded-full bg-red-500/[0.04] blur-3xl" />
         <div className="absolute left-[-10rem] top-1/3 h-80 w-80 rounded-full bg-orange-500/[0.035] blur-3xl" />
         <div className="absolute right-[-8rem] bottom-0 h-96 w-96 rounded-full bg-emerald-500/[0.03] blur-3xl" />
         <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-black/30 to-transparent" />
