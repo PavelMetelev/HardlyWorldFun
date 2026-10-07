@@ -1120,7 +1120,7 @@ export default function App() {
       <div className="pointer-events-none absolute inset-x-0 top-16 z-0 overflow-hidden" aria-hidden="true">
         <div className="mx-auto w-full max-w-[1920px]" style={{ aspectRatio: "16 / 9" }}>
           <img
-            src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/92096d1d-fbe3-4655-860b-dd327a4f23b5.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWY0MDMxZjdhMzE4YzcyZCIsImJ1Y2tldCI6InJ1ndy1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTU0MTIzOX0.azwWlj7dpwMykpW30t2cHG_1ss45lqZBpFyeaK3XMsY"
+            src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/92096d1d-fbe3-4655-860b-dd327a4f23b5.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWY0MDMxZjdhMzE4YzcyZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTQ1MTIzOX0.azwWlj7dpwMykpW30t2cHG_1ss45lqZBpFyeaK3XMsY"
             alt=""
             aria-hidden="true"
             className="block h-full w-full object-cover object-center opacity-[0.82]"
