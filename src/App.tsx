@@ -535,7 +535,7 @@ function RulesExplorer() {
   }, []);
 
   return (
-    <section id="rules" className="scroll-mt-28">
+    <section id="rules" className="content-surface scroll-mt-28 rounded-[2rem]">
       <div className="mb-8 max-w-3xl">
         <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-300">
           <BookOpen className="h-3.5 w-3.5" /> Регламент проекта
@@ -914,7 +914,7 @@ function ModsExplorer() {
   };
 
   return (
-    <section id="mods" className="scroll-mt-28">
+    <section id="mods" className="content-surface scroll-mt-28 rounded-[2rem]">
       <div className="mb-8 max-w-3xl">
         <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-300">
           <Zap className="h-3.5 w-3.5" /> Проверка модификаций
@@ -1223,7 +1223,7 @@ export default function App() {
               src="/hardlyworld-bg.png?v=4"
               alt=""
               aria-hidden="true"
-              className="absolute inset-[-6%] h-[112%] w-[112%] scale-110 object-cover opacity-[0.16] blur-2xl"
+              className="absolute inset-[-6%] h-[112%] w-[112%] scale-110 object-cover opacity-[0.07] blur-3xl"
             />
             <div className="absolute inset-0 bg-[#05080d]/52" />
             <div className="absolute inset-x-0 top-16">
@@ -1232,7 +1232,7 @@ export default function App() {
                   src="/hardlyworld-bg.png?v=4"
                   alt=""
                   aria-hidden="true"
-                  className="block h-full w-full object-cover object-center opacity-[0.78]"
+                  className="block h-full w-full object-cover object-center opacity-[0.72]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/12 via-transparent to-[#07090d]/88" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/34 via-transparent to-[#07090d]/18" />
