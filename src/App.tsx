@@ -75,7 +75,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
   ] as const;
 
   return (
-    <section id="start" className="scroll-mt-28 rounded-[2rem] border border-white/[0.09] bg-[#070b12]/96 p-5 shadow-2xl shadow-black/30 backdrop-blur-md md:p-7">
+    <section id="start" className="scroll-mt-28 rounded-[2rem] border border-white/[0.09] bg-transparent p-5 md:p-7">
       <div className="mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
           <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-300">Быстрый старт</div>
@@ -89,7 +89,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map(([num, title, text], index) => (
-          <div key={num} className="relative rounded-2xl border border-white/[0.10] bg-[#0b111a] p-5 shadow-lg shadow-black/20">
+          <div key={num} className="relative rounded-2xl border border-white/[0.10] bg-transparent p-5">
             {index < steps.length - 1 && (
               <div className="absolute right-[-13px] top-1/2 z-10 hidden h-px w-6 bg-white/[0.08] lg:block" aria-hidden="true" />
             )}
@@ -103,7 +103,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.10] bg-[#0b111a] p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.10] bg-transparent p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">Адрес сервера</div>
           <div className="mt-1 break-all font-mono text-sm font-bold text-white">{SERVER_IP}</div>
@@ -386,7 +386,7 @@ function RuleCard({
     <motion.article
       id={"rule-" + rule.id.replaceAll(".", "-")}
       initial={false}
-      className="group rounded-2xl border border-white/[0.12] bg-[#070b12]/95 p-5 shadow-xl shadow-black/30 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/[0.18] hover:bg-[#0b111a]/95"
+      className="group rounded-2xl border border-white/[0.12] bg-transparent p-5 transition hover:-translate-y-0.5 hover:border-white/[0.18]"
     >
       <div className="flex gap-3.5">
         <span className="mt-0.5 inline-flex h-8 min-w-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-300">
@@ -546,7 +546,7 @@ function RulesExplorer() {
         </p>
       </div>
 
-      <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-3 backdrop-blur-sm">
+      <div className="mb-6 rounded-2xl border border-white/[0.07] bg-transparent p-3">
         <div className="flex flex-col gap-3 lg:flex-row">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -622,7 +622,7 @@ function RulesExplorer() {
         </button>
       </div>
 
-      <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4">
+      <div className="mb-6 rounded-2xl border border-white/[0.07] bg-transparent p-4">
         <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
           <BookOpen className="h-3.5 w-3.5" /> Оглавление
         </div>
@@ -635,7 +635,7 @@ function RulesExplorer() {
                   .getElementById(sectionAnchor(section.title))
                   ?.scrollIntoView({ behavior: "smooth", block: "start" })
               }
-              className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-black/20 px-3 py-3 text-left transition hover:border-white/10 hover:bg-white/[0.04]"
+              className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-transparent px-3 py-3 text-left transition hover:border-white/10 hover:bg-white/[0.04]"
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-red-400/10 bg-red-500/[0.06] text-red-300">
                 {sectionIcons[section.title]}
@@ -663,7 +663,7 @@ function RulesExplorer() {
 
       <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
         <aside className="hidden lg:block">
-          <div className="sticky top-24 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-3">
+          <div className="sticky top-24 rounded-2xl border border-white/[0.07] bg-transparent p-3">
             <div className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Разделы</div>
             <div className="space-y-1">
               {RULES_DATA.map((section) => (
