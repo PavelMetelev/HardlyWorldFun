@@ -386,7 +386,7 @@ function RuleCard({
     <motion.article
       id={"rule-" + rule.id.replaceAll(".", "-")}
       initial={false}
-      className="group rounded-2xl border border-white/[0.09] bg-[#0a0e15]/90 p-5 shadow-xl shadow-black/20 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-[#0d121b]/95"
+      className="group rounded-2xl border border-white/[0.12] bg-[#070b12]/95 p-5 shadow-xl shadow-black/30 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/[0.18] hover:bg-[#0b111a]/95"
     >
       <div className="flex gap-3.5">
         <span className="mt-0.5 inline-flex h-8 min-w-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-300">
@@ -1216,7 +1216,7 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
+      <main className="site-main relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
         <section id="home" className="relative isolate scroll-mt-28">
           <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
             <img
