@@ -1221,19 +1221,27 @@ export default function App() {
 
       <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
         <section id="home" className="relative isolate scroll-mt-28">
-          <div className="pointer-events-none absolute left-1/2 top-0 z-0 w-screen -translate-x-1/2 overflow-hidden" aria-hidden="true">
-            <div className="relative aspect-[16/9] w-full overflow-hidden">
-              <img
-                src="/hardlyworld-bg.png?v=3"
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 h-full w-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/12 via-[#05080d]/28 to-[#07090d]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/42 via-transparent to-[#07090d]/20" />
+          <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+            <img
+              src="/hardlyworld-bg.png?v=4"
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-[-6%] h-[112%] w-[112%] scale-110 object-cover opacity-[0.16] blur-2xl"
+            />
+            <div className="absolute inset-0 bg-[#05080d]/52" />
+            <div className="absolute inset-x-0 top-16">
+              <div className="relative mx-auto aspect-[16/9] w-full max-w-[1920px] overflow-hidden">
+                <img
+                  src="/hardlyworld-bg.png?v=4"
+                  alt=""
+                  aria-hidden="true"
+                  className="block h-full w-full object-cover object-center opacity-[0.78]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/12 via-transparent to-[#07090d]/88" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/34 via-transparent to-[#07090d]/18" />
+              </div>
             </div>
           </div>
-
           <div className="relative z-10">
             <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
               <div>
