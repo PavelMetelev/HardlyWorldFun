@@ -35,6 +35,7 @@ import {
   RULES_DATA,
   SERVER_IP,
   SERVER_MODE,
+  SERVER_VERSION,
   SERVER_NAME,
   STORE_URL,
   TOTAL_ALLOWED_MODS,
@@ -229,7 +230,7 @@ function ServerStatusCard() {
               <Server className="h-3.5 w-3.5" /> Версия
             </div>
             <div className="truncate text-lg font-black text-white">
-              {state === "online" ? version : "—"}
+              {SERVER_VERSION}
             </div>
           </div>
 
