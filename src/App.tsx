@@ -310,6 +310,21 @@ function ServerStatusCard() {
           </div>
         </div>
 
+        <div className="mt-4">
+          <div className="mb-2 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">
+            <span>Заполненность</span>
+            <span className="text-slate-300">
+              {state === "online" && maxPlayers ? Math.min(100, Math.round((players / maxPlayers) * 100)) + "%" : "—"}
+            </span>
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-emerald-300 to-orange-300 transition-[width] duration-500"
+              style={{ width: state === "online" && maxPlayers ? Math.min(100, Math.max(0, (players / maxPlayers) * 100)) + "%" : "0%" }}
+            />
+          </div>
+        </div>
+
         {state === "error" && (
           <div className="mt-3 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-3 text-xs leading-5 text-amber-100">
             Не удалось получить статус. Нажмите «Обновить» и повторите проверку.
@@ -712,6 +727,76 @@ function RulesExplorer() {
   );
 }
 
+function UpdatesSection() {
+  const updates = [
+    {
+      date: "СЕЙЧАС",
+      title: "Глобальное обновление сайта",
+      text: "Полностью обновлённый интерфейс HardlyWorld: фон, навигация, быстрый старт, правила и моды.",
+      icon: <Zap className="h-5 w-5" />,
+      accent: "red",
+    },
+    {
+      date: "ВСЕГДА ПОД РУКОЙ",
+      title: "Правила и моды",
+      text: "Ищи пункт правила или мод по названию и сразу получай нужный статус без лишних переходов.",
+      icon: <BookOpen className="h-5 w-5" />,
+      accent: "orange",
+    },
+    {
+      date: "В РЕАЛЬНОМ ВРЕМЕНИ",
+      title: "Статус сервера",
+      text: "На главной странице отображаются текущий онлайн, максимальный слот и время последней проверки.",
+      icon: <Server className="h-5 w-5" />,
+      accent: "emerald",
+    },
+  ] as const;
+
+  return (
+    <section id="updates" className="portal-frame scroll-mt-28 rounded-[2rem] p-5 md:p-7">
+      <div className="mb-7 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-400" /> Что нового
+          </div>
+          <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Обновления HardlyWorld</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+            Главное о сайте и функциях проекта — коротко и без лишнего шума.
+          </p>
+        </div>
+        <span className="inline-flex items-center gap-2 self-start rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-300">
+          <Clock3 className="h-3.5 w-3.5" /> Версия сайта · 1.0
+        </span>
+      </div>
+
+      <div className="grid gap-3 lg:grid-cols-3">
+        {updates.map((item) => (
+          <article
+            key={item.title}
+            className="portal-card relative overflow-hidden rounded-2xl border border-white/[0.11] bg-black/20 p-5"
+          >
+            <div
+              className={
+                "mb-5 flex h-10 w-10 items-center justify-center rounded-xl border " +
+                (item.accent === "emerald"
+                  ? "border-emerald-400/15 bg-emerald-500/10 text-emerald-300"
+                  : item.accent === "orange"
+                    ? "border-orange-400/15 bg-orange-500/10 text-orange-300"
+                    : "border-red-400/15 bg-red-500/10 text-red-300")
+              }
+            >
+              {item.icon}
+            </div>
+            <div className="mb-2 text-[10px] font-black uppercase tracking-[0.17em] text-slate-400">{item.date}</div>
+            <h3 className="text-lg font-black text-white">{item.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-200">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ModsExplorer() {
   const [tab, setTab] = useState<"all" | "allowed" | "banned">("all");
   const [query, setQuery] = useState("");
@@ -1083,7 +1168,7 @@ export default function App() {
       },
     );
 
-    ["home", "rules", "mods"].forEach((id) => {
+    ["home", "start", "updates", "rules", "mods"].forEach((id) => {
       const element = document.getElementById(id);
       if (element) observer.observe(element);
     });
@@ -1142,6 +1227,7 @@ export default function App() {
             {[
               ["home", "Главная"],
               ["start", "Как играть"],
+              ["updates", "Обновления"],
               ["rules", "Правила"],
               ["mods", "Моды"],
             ].map(([id, label]) => (
@@ -1196,7 +1282,7 @@ export default function App() {
               exit={{ opacity: 0, height: 0 }}
               className="border-t border-white/[0.06] bg-[#07090d] px-4 py-3 sm:hidden"
             >
-              {[["home", "Главная"], ["start", "Как играть"], ["rules", "Правила"], ["mods", "Моды"]].map(([id, label]) => (
+              {[["home", "Главная"], ["start", "Как играть"], ["updates", "Обновления"], ["rules", "Правила"], ["mods", "Моды"]].map(([id, label]) => (
                 <button
                   key={id}
                   onClick={() => scrollTo(id)}
@@ -1321,6 +1407,8 @@ export default function App() {
 
         <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <GettingStarted onNavigate={scrollTo} />
+        <div className="my-16 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+        <UpdatesSection />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <RulesExplorer />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
@@ -1335,11 +1423,26 @@ export default function App() {
       </main>
 
       <footer className="relative z-10 border-t border-white/[0.06]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-slate-400 md:flex-row md:items-center md:justify-between md:px-6">
-          <div>
-            © {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}
+        <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
+          <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+            <div className="max-w-sm">
+              <div className="text-lg font-black text-white">{SERVER_NAME}</div>
+              <div className="mt-1 text-[10px] font-extrabold uppercase tracking-[0.24em] text-red-300/70">{SERVER_MODE}</div>
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                Официальный сайт проекта: правила, моды, быстрый старт и актуальный статус сервера в одном месте.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold text-slate-300">
+              <button onClick={() => scrollTo("home")} className="transition hover:text-white">Главная</button>
+              <button onClick={() => scrollTo("start")} className="transition hover:text-white">Как играть</button>
+              <button onClick={() => scrollTo("updates")} className="transition hover:text-white">Обновления</button>
+              <button onClick={() => scrollTo("rules")} className="transition hover:text-white">Правила</button>
+              <button onClick={() => scrollTo("mods")} className="transition hover:text-white">Моды</button>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="mt-8 flex flex-col gap-4 border-t border-white/[0.06] pt-5 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+            <div>© {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}</div>
+            <div className="flex flex-wrap items-center gap-4">
             <CopyButton value={SERVER_IP} label="IP сервера" icon={<Server className="h-4 w-4" />} />
             <a href={VK_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
               VK
