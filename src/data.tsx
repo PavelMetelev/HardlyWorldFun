@@ -15,6 +15,7 @@ export type Section = {
 
 export const SERVER_NAME = "HardlyWorld";
 export const SERVER_MODE = "Анархия";
+export const SERVER_VERSION = "1.21.4";
 export const SERVER_IP = "mc.HardlyWorld.fun";
 export const VK_URL = "https://vk.ru/hardly_world_anarchy";
 export const STORE_URL = "https://hardlyworld.fun/";
