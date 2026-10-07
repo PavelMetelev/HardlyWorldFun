@@ -1116,17 +1116,16 @@ export default function App() {
   ] as const;
 
   return (
-    <div className="relative min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <img
-          src="https://images.unsplash.com/photo-1509010008-a77006ce0b63?auto=format&fit=crop&fm=jpg&q=86&w=2400"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-[#05080d]/38" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/28 via-transparent to-[#05080d]/42" />
-      </div>
+    <div
+      className="relative min-h-screen bg-[#07090d] text-white"
+      style={{
+        backgroundImage: "linear-gradient(rgba(5, 8, 13, 0.42), rgba(5, 8, 13, 0.48)), url('https://images.unsplash.com/photo-1509010008-a77006ce0b63?auto=format&fit=crop&fm=jpg&q=86&w=2400')",
+        backgroundAttachment: "fixed",
+        backgroundPosition: "center top",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
           <button onClick={() => scrollTo("home")} className="flex items-center gap-3" aria-label="На главную">
