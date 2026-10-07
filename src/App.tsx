@@ -385,11 +385,8 @@ function RuleCard({
   return (
     <motion.article
       id={"rule-" + rule.id.replaceAll(".", "-")}
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.08 }}
-      transition={{ duration: 0.28 }}
-      className="group rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5 transition hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.045]"
+      initial={false}
+      className="group rounded-2xl border border-white/[0.09] bg-[#0a0e15]/90 p-5 shadow-xl shadow-black/20 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-[#0d121b]/95"
     >
       <div className="flex gap-3.5">
         <span className="mt-0.5 inline-flex h-8 min-w-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-500">
@@ -397,12 +394,12 @@ function RuleCard({
         </span>
 
         <div className="min-w-0 flex-1">
-          <p className="text-[15px] leading-7 text-slate-100 md:text-[17px]">
+          <p className="text-[15px] leading-7 text-white md:text-[17px]">
             <RuleHighlight text={rule.text} query={query} />
           </p>
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-300">
               <Clock3 className="h-3.5 w-3.5" /> Наказание
             </span>
             <span className="rounded-full border border-red-400/15 bg-red-500/[0.07] px-2.5 py-1 text-sm font-bold text-red-300">
@@ -414,7 +411,7 @@ function RuleCard({
             {rule.note && (
               <button
                 onClick={() => setOpen((value) => !value)}
-                className="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold text-slate-400 transition hover:bg-white/[0.04] hover:text-white"
+                className="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.06] hover:text-white"
               >
                 <Info className="h-4 w-4" />
                 {open ? "Скрыть примечание" : "Показать примечание"}
@@ -433,7 +430,7 @@ function RuleCard({
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="mt-3 rounded-xl border border-white/[0.06] bg-black/20 p-4 text-sm leading-6 text-slate-400">
+                  <div className="mt-3 rounded-xl border border-white/[0.08] bg-black/40 p-4 text-sm leading-6 text-slate-200">
                     <RuleHighlight text={rule.note} query={query} />
                   </div>
                 </motion.div>
@@ -475,7 +472,7 @@ function RuleSection({
             </h3>
           </div>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-slate-500">
+        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-slate-300">
           {rules.length} из {section.rules.length}
         </span>
       </div>
@@ -677,7 +674,7 @@ function RulesExplorer() {
                       .getElementById(sectionAnchor(section.title))
                       ?.scrollIntoView({ behavior: "smooth", block: "start" })
                   }
-                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-semibold text-slate-500 transition hover:bg-white/[0.04] hover:text-white"
+                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-semibold text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-red-400/60" />
                   <span className="min-w-0 truncate">{section.title}</span>
