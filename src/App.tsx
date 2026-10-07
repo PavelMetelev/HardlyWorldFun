@@ -1123,9 +1123,9 @@ export default function App() {
           >
             <span className="relative grid h-10 w-14 shrink-0 place-items-center">
               <img
-                src="/hardlyworld-logo.svg"
+                src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/b7af7cfd-018a-446d-8165-e739dcf3f183.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYjY4MTZlZTM0NTlhYWYyZSIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUxMDI0M30.VMPBMpR37zGx7GVex2OFUmEdCwcNpVbRVfXeBty_bDo"
                 alt="HW"
-                className="h-11 w-16 object-contain drop-shadow-[0_0_16px_rgba(248,90,55,0.24)] transition duration-200 group-hover:scale-[1.04]"
+                className="h-11 w-16 object-contain drop-shadow-[0_0_18px_rgba(248,90,55,0.24)] transition duration-200 group-hover:scale-[1.04]"
               />
             </span>
             <span className="leading-none">
