@@ -61,6 +61,68 @@ const sectionIcons: Record<string, React.ReactNode> = {
   "Администрация и Модерация": <UserCheck className="h-5 w-5" />,
 };
 
+
+
+function sectionAnchor(title: string) {
+  return "rule-section-" + title.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "");
+}
+
+function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
+  const steps = [
+    ["01", "Скопируй IP", "Нажми «Копировать IP» и вставь адрес в список серверов."],
+    ["02", "Выбери версию", "Используй Minecraft Java Edition 1.21.4."],
+    ["03", "Зайди на сервер", "Добавь сервер и подключайся к HardlyWorld."],
+    ["04", "Проверь правила", "Перед игрой быстро сверяй моды и регламент проекта."],
+  ] as const;
+
+  return (
+    <section id="start" className="scroll-mt-28">
+      <div className="mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-300">Быстрый старт</div>
+          <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Как начать играть</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Четыре шага от установки клиента до первого входа на сервер.</p>
+        </div>
+        <div className="inline-flex items-center gap-2 self-start rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-400">
+          <Server className="h-3.5 w-3.5" /> {SERVER_VERSION} · {SERVER_MODE}
+        </div>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {steps.map(([num, title, text], index) => (
+          <div key={num} className="relative rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
+            {index < steps.length - 1 && (
+              <div className="absolute right-[-13px] top-1/2 z-10 hidden h-px w-6 bg-white/[0.08] lg:block" aria-hidden="true" />
+            )}
+            <div className="mb-5 flex items-center justify-between">
+              <span className="font-mono text-xs font-bold text-orange-300">{num}</span>
+              <span className="h-2 w-2 rounded-full bg-orange-300/70" />
+            </div>
+            <h3 className="font-black text-white">{title}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-500">{text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">Адрес сервера</div>
+          <div className="mt-1 break-all font-mono text-sm font-bold text-white">{SERVER_IP}</div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <CopyButton value={SERVER_IP} label="Скопировать IP" />
+          <button onClick={() => onNavigate("rules")} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm font-bold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">
+            Правила <ArrowRight className="h-4 w-4" />
+          </button>
+          <button onClick={() => onNavigate("mods")} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm font-bold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">
+            Моды <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const modIcons: Record<string, React.ReactNode> = {
   "Кликеры, макросы и другие моды": <Zap className="h-4 w-4" />,
   "Визуальные эффекты и клиенты": <Wifi className="h-4 w-4" />,
@@ -169,7 +231,7 @@ function CopyButton({
 }
 
 function ServerStatusCard() {
-  const { state, players, maxPlayers, version, checkedAt, refresh } = useServerStatus();
+  const { state, players, maxPlayers, checkedAt, refresh } = useServerStatus();
   const label =
     state === "loading"
       ? "Проверяем…"
@@ -572,7 +634,43 @@ function RulesExplorer() {
         Данный свод правил может быть изменён в любой момент, и администрация оставляет за собой право не оповещать игроков об изменениях.
       </div>
 
-      {filtered.length ? (
+      {filtered.length ? 
+
+      <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4">
+        <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
+          <BookOpen className="h-3.5 w-3.5" /> Оглавление
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {RULES_DATA.map((section) => (
+            <button
+              key={section.title}
+              onClick={() => document.getElementById(sectionAnchor(section.title))?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-black/20 px-3 py-3 text-left transition hover:border-white/10 hover:bg-white/[0.04]"
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-red-400/10 bg-red-500/[0.06] text-red-300">{sectionIcons[section.title]}</span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-bold text-slate-200">{section.title}</span>
+                <span className="block text-[11px] text-slate-600">{section.rules.length} пунктов</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-orange-400/10 bg-orange-500/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-orange-300" />
+          <div>
+            <div className="text-sm font-black text-orange-100">Сайт обновлён 7 октября 2026</div>
+            <div className="mt-0.5 text-xs leading-5 text-slate-500">Интерфейс и навигация обновлены. Сам регламент по-прежнему может меняться администрацией.</div>
+          </div>
+        </div>
+        <button onClick={() => setOpenCommand("open")} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white">
+          Показать примечания
+        </button>
+      </div>
+
+      
         <div className="space-y-16">
           {filtered.map(({ section, rules }) => (
             <RuleSection
@@ -909,6 +1007,23 @@ function ModsExplorer() {
         </div>
       )}
 
+
+      {query.trim() && !exact && filtered.length === 0 && (
+        <div className="mb-5 rounded-2xl border border-amber-400/10 bg-amber-500/[0.04] p-5">
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-300">
+              <Search className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="font-black text-white">Мод не найден в официальном списке</div>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                «{query}» не найден среди разрешённых или запрещённых модов. Это не означает, что он разрешён — уточни статус у администрации проекта.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-5 xl:grid-cols-2">
         {(tab === "all" || tab === "allowed") &&
           renderColumn(
@@ -982,7 +1097,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden contain-paint" aria-hidden="true">
         <div className="absolute left-1/2 top-[-22rem] h-[42rem] w-[70rem] -translate-x-1/2 rounded-full bg-red-500/[0.06] blur-3xl" />
         <div className="absolute left-[-10rem] top-1/3 h-80 w-80 rounded-full bg-orange-500/[0.035] blur-3xl" />
         <div className="absolute right-[-8rem] bottom-0 h-96 w-96 rounded-full bg-emerald-500/[0.03] blur-3xl" />
@@ -1115,28 +1230,32 @@ export default function App() {
               </h1>
 
               <p className="mt-6 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-                Всё необходимое для игрока в одном месте: правила проекта, список модификаций, быстрый статус сервера и ссылки на сообщество.
+                Анархический Minecraft-проект с понятными правилами, быстрым поиском модов и живым статусом сервера. Всё нужное для входа и игры — в одном месте.
               </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <CopyButton value={SERVER_IP} label="Скопировать IP" />
                 <button
-                  onClick={() => scrollTo("mods")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-black text-black transition hover:-translate-y-0.5 hover:bg-slate-200"
-                >
-                  Проверить моды <ArrowRight className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => scrollTo("rules")}
+                  onClick={() => scrollTo("start")}
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
                 >
-                  Читать правила <ArrowRight className="h-4 w-4 text-slate-500" />
+                  Как начать играть <ArrowRight className="h-4 w-4 text-slate-500" />
+                </button>
+                <button
+                  onClick={() => scrollTo("mods")}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-slate-300 transition hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-white"
+                >
+                  Проверить моды
                 </button>
               </div>
 
-              <div className="mt-8 inline-flex flex-wrap items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-xs text-slate-500">
-                <Server className="h-3.5 w-3.5" /> {SERVER_IP}
-                <span className="text-slate-700">·</span>
-                Minecraft Java
+              <div className="mt-7 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-400">
+                  <Server className="h-3.5 w-3.5" /> {SERVER_IP}
+                </span>
+                <span className="rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-400">
+                  Minecraft Java · {SERVER_VERSION}
+                </span>
               </div>
             </div>
 
@@ -1163,6 +1282,8 @@ export default function App() {
           </div>
         </section>
 
+        <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+        <GettingStarted onNavigate={scrollTo} />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <RulesExplorer />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
