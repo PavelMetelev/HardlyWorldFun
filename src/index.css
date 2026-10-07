@@ -60,3 +60,60 @@ input::placeholder {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Hard contrast for page content over the photographic background. */
+.site-main {
+  color: #f8fafc;
+}
+
+.site-main h1,
+.site-main h2,
+.site-main h3,
+.site-main h4,
+.site-main p,
+.site-main li,
+.site-main label,
+.site-main strong,
+.site-main button,
+.site-main a,
+.site-main span {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);
+}
+
+.site-main h1,
+.site-main h2,
+.site-main h3,
+.site-main h4 {
+  color: #ffffff;
+}
+
+.site-main p {
+  color: #e2e8f0;
+}
+
+.site-main [class*="text-slate-"],
+.site-main [class*="text-red-"],
+.site-main [class*="text-amber-"] {
+  opacity: 1 !important;
+}
+
+.site-main .text-slate-300,
+.site-main .text-slate-400,
+.site-main .text-slate-500,
+.site-main .text-slate-600,
+.site-main .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+.site-main .text-red-100,
+.site-main .text-red-200,
+.site-main .text-red-300 {
+  color: #fecaca !important;
+}
+
+.site-main .text-amber-100,
+.site-main .text-amber-200,
+.site-main .text-amber-300 {
+  color: #fde68a !important;
+}
