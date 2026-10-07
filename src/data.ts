@@ -223,7 +223,7 @@ export const RULES_DATA: Section[] = [
 
 
 
-export export const ALLOWED_MODS = {
+export const ALLOWED_MODS = {
   "Кликеры, макросы и другие моды": [
     "TapeMouse",
     "AutoClanInvest",
@@ -286,7 +286,7 @@ export export const ALLOWED_MODS = {
   ],
 };
 
-export export const BANNED_MODS = {
+export const BANNED_MODS = {
   "Моды для записи игры": [
     "ReplayMod",
     "IsometricRender",
