@@ -258,8 +258,18 @@ export default async function handler(req, res) {
     );
 
     if (!telegramResponse.ok) {
+      let telegramError = "Неизвестная ошибка Telegram";
+      try {
+        const telegramData = await telegramResponse.json();
+        telegramError =
+          typeof telegramData?.description === "string"
+            ? telegramData.description
+            : telegramError;
+      } catch {}
+      console.error("Telegram delivery failed:", telegramResponse.status, telegramError);
       return res.status(502).json({
         error: "Не удалось доставить обращение техническому администратору.",
+        debug: process.env.NODE_ENV === "development" ? telegramError : undefined,
       });
     }
 
