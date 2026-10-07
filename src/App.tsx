@@ -478,7 +478,7 @@ function RuleSection({
   if (!rules.length) return null;
 
   return (
-    <section className="scroll-mt-28">
+    <section id={sectionAnchor(section.title)} className="scroll-mt-28">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="mb-2 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-300">
@@ -547,12 +547,12 @@ function RulesExplorer() {
   useEffect(() => {
     const hash = window.location.hash.match(/^#rule-(.+)$/);
     if (!hash) return;
-
     window.setTimeout(() => {
-      document
-        .getElementById("rule-" + hash[1])
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 150);
+      document.getElementById("rule-" + hash[1])?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 120);
   }, []);
 
   return (
@@ -572,6 +572,7 @@ function RulesExplorer() {
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
             <input
+              aria-label="Поиск по правилам"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Найти правило: чит, бан, реклама, 3.5…"
@@ -627,14 +628,20 @@ function RulesExplorer() {
         </div>
       </div>
 
-      <div className="mb-9 rounded-2xl border border-red-400/10 bg-red-500/[0.035] p-5 text-sm leading-6 text-red-100/75">
-        <div className="mb-1 flex items-center gap-2 font-black text-red-200">
-          <AlertTriangle className="h-4 w-4" /> Важно
+      <div className="mb-7 flex flex-col gap-3 rounded-2xl border border-red-400/10 bg-red-500/[0.035] p-5 text-sm leading-6 text-red-100/75 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="mb-1 flex items-center gap-2 font-black text-red-200">
+            <AlertTriangle className="h-4 w-4" /> Важно
+          </div>
+          Данный свод правил может быть изменён в любой момент, и администрация оставляет за собой право не оповещать игроков об изменениях.
         </div>
-        Данный свод правил может быть изменён в любой момент, и администрация оставляет за собой право не оповещать игроков об изменениях.
+        <button
+          onClick={() => setOpenCommand("open")}
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white"
+        >
+          Открыть примечания
+        </button>
       </div>
-
-      {filtered.length ? 
 
       <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4">
         <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
@@ -644,10 +651,16 @@ function RulesExplorer() {
           {RULES_DATA.map((section) => (
             <button
               key={section.title}
-              onClick={() => document.getElementById(sectionAnchor(section.title))?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              onClick={() =>
+                document
+                  .getElementById(sectionAnchor(section.title))
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
               className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-black/20 px-3 py-3 text-left transition hover:border-white/10 hover:bg-white/[0.04]"
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-red-400/10 bg-red-500/[0.06] text-red-300">{sectionIcons[section.title]}</span>
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-red-400/10 bg-red-500/[0.06] text-red-300">
+                {sectionIcons[section.title]}
+              </span>
               <span className="min-w-0">
                 <span className="block truncate text-sm font-bold text-slate-200">{section.title}</span>
                 <span className="block text-[11px] text-slate-600">{section.rules.length} пунктов</span>
@@ -657,40 +670,65 @@ function RulesExplorer() {
         </div>
       </div>
 
-      <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-orange-400/10 bg-orange-500/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-7 flex flex-col gap-3 rounded-2xl border border-orange-400/10 bg-orange-500/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-3">
           <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-orange-300" />
           <div>
             <div className="text-sm font-black text-orange-100">Сайт обновлён 7 октября 2026</div>
-            <div className="mt-0.5 text-xs leading-5 text-slate-500">Интерфейс и навигация обновлены. Сам регламент по-прежнему может меняться администрацией.</div>
+            <div className="mt-0.5 text-xs leading-5 text-slate-500">
+              Интерфейс, навигация и проверка сервера обновлены. Сам регламент может меняться администрацией.
+            </div>
           </div>
         </div>
-        <button onClick={() => setOpenCommand("open")} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white">
-          Показать примечания
-        </button>
       </div>
 
-      
-        <div className="space-y-16">
-          {filtered.map(({ section, rules }) => (
-            <RuleSection
-              key={section.title}
-              section={section}
-              rules={rules}
-              openCommand={openCommand}
-              query={query}
-            />
-          ))}
+      <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <aside className="hidden lg:block">
+          <div className="sticky top-24 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-3">
+            <div className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">Разделы</div>
+            <div className="space-y-1">
+              {RULES_DATA.map((section) => (
+                <button
+                  key={section.title}
+                  onClick={() =>
+                    document
+                      .getElementById(sectionAnchor(section.title))
+                      ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                  }
+                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-semibold text-slate-500 transition hover:bg-white/[0.04] hover:text-white"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-400/60" />
+                  <span className="min-w-0 truncate">{section.title}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        <div>
+          {filtered.length ? (
+            <div className="space-y-16">
+              {filtered.map(({ section, rules }) => (
+                <RuleSection
+                  key={section.title}
+                  section={section}
+                  rules={rules}
+                  openCommand={openCommand}
+                  query={query}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center">
+              <Search className="mx-auto mb-3 h-7 w-7 text-slate-700" />
+              <div className="font-black text-white">Ничего не найдено</div>
+              <p className="mt-1 text-sm text-slate-600">
+                Попробуйте другой запрос или снимите фильтр наказания.
+              </p>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center">
-          <Search className="mx-auto mb-3 h-7 w-7 text-slate-700" />
-          <div className="font-black text-white">Ничего не найдено</div>
-          <p className="mt-1 text-sm text-slate-600">
-            Попробуйте другой запрос или снимите фильтр наказания.
-          </p>
-        </div>
-      )}
+      </div>
     </section>
   );
 }
