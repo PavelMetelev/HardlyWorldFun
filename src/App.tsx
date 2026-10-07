@@ -1279,15 +1279,7 @@ export default function App() {
             <ServerStatusCard />
           </div>
 
-          <div className="mt-10 overflow-hidden rounded-[2rem] border border-white/[0.08] bg-black/30 shadow-2xl shadow-black/30">
-            <img
-              src="/hardlyworld-hero.svg"
-              alt="HardlyWorld — Анархия, mc.HardlyWorld.fun, Minecraft 1.21.4"
-              loading="eager"
-              decoding="async"
-              className="block h-auto w-full"
-            />
-          </div>
+div>
 
           <div className="mt-12 grid gap-3 sm:grid-cols-3">
             {stats.map(([value, title, desc, Icon], index) => (
