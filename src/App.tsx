@@ -75,12 +75,12 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
   ] as const;
 
   return (
-    <section id="start" className="scroll-mt-28">
+    <section id="start" className="scroll-mt-28 rounded-[2rem] border border-white/[0.09] bg-[#070b12]/96 p-5 shadow-2xl shadow-black/30 backdrop-blur-md md:p-7">
       <div className="mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
           <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-300">Быстрый старт</div>
           <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Как начать играть</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">Четыре шага от установки клиента до первого входа на сервер.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-200">Четыре шага от установки клиента до первого входа на сервер.</p>
         </div>
         <div className="inline-flex items-center gap-2 self-start rounded-xl border border-white/[0.07] bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-400">
           <Server className="h-3.5 w-3.5" /> {SERVER_VERSION} · {SERVER_MODE}
@@ -89,7 +89,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map(([num, title, text], index) => (
-          <div key={num} className="relative rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
+          <div key={num} className="relative rounded-2xl border border-white/[0.10] bg-[#0b111a] p-5 shadow-lg shadow-black/20">
             {index < steps.length - 1 && (
               <div className="absolute right-[-13px] top-1/2 z-10 hidden h-px w-6 bg-white/[0.08] lg:block" aria-hidden="true" />
             )}
@@ -98,12 +98,12 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
               <span className="h-2 w-2 rounded-full bg-orange-300/70" />
             </div>
             <h3 className="font-black text-white">{title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-300">{text}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-200">{text}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.10] bg-[#0b111a] p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">Адрес сервера</div>
           <div className="mt-1 break-all font-mono text-sm font-bold text-white">{SERVER_IP}</div>
