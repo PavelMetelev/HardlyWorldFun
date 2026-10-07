@@ -1119,7 +1119,7 @@ export default function App() {
     <div
       className="relative min-h-screen bg-[#07090d] text-white"
       style={{
-        backgroundImage: "linear-gradient(rgba(5, 8, 13, 0.42), rgba(5, 8, 13, 0.48)), url('/hardlyworld-bg.jpg')",
+        backgroundImage: "linear-gradient(rgba(5, 8, 13, 0.42), rgba(5, 8, 13, 0.48)), url('/hardlyworld-bg.png')",
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
