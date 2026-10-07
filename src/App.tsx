@@ -15,7 +15,6 @@ import {
   ExternalLink,
   Flag,
   Info,
-  Link2,
   Menu,
   MessageSquare,
   RefreshCw,
@@ -382,16 +381,6 @@ function RuleCard({
     if (openCommand === "open") setOpen(true);
     if (openCommand === "closed") setOpen(false);
   }, [openCommand]);
-
-  const copyRuleLink = async () => {
-    const hash = "rule-" + rule.id.replaceAll(".", "-");
-    const url = window.location.origin + window.location.pathname + "#" + hash;
-    window.history.replaceState(null, "", "#" + hash);
-
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch {}
-  };
 
   return (
     <motion.article
