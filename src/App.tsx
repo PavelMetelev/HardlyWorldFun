@@ -312,7 +312,7 @@ function ServerStatusCard() {
 
         <div className="mt-4">
           <div className="mb-2 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">
-            <span>Заполненность</span>
+            <span>Онлайн сейчас</span>
             <span className="text-slate-300">
               {state === "online" && maxPlayers ? Math.min(100, Math.round((players / maxPlayers) * 100)) + "%" : "—"}
             </span>
@@ -323,6 +323,19 @@ function ServerStatusCard() {
               style={{ width: state === "online" && maxPlayers ? Math.min(100, Math.max(0, (players / maxPlayers) * 100)) + "%" : "0%" }}
             />
           </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold text-slate-400">
+          <span className={state === "online" ? "text-emerald-300" : state === "offline" ? "text-red-300" : "text-slate-400"}>
+            {state === "online"
+              ? "Сервер доступен для подключения"
+              : state === "offline"
+                ? "Сервер сейчас недоступен"
+                : "Статус уточняется"}
+          </span>
+          <span>
+            Автообновление · 5 мин
+          </span>
         </div>
 
         {state === "error" && (
@@ -1314,7 +1327,7 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      <main className="site-main relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
+      <main className="site-main relative z-10 mx-auto max-w-6xl px-4 pb-32 pt-28 md:px-6 md:pb-24 md:pt-36">
         <section id="home" className="relative isolate scroll-mt-28">
           <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
             <img
@@ -1422,6 +1435,16 @@ export default function App() {
         </div>
       </main>
 
+      <div className="fixed inset-x-4 bottom-4 z-40 md:hidden">
+        <div className="flex items-center gap-2 rounded-2xl border border-red-400/15 bg-[#090d14]/92 p-2 shadow-2xl shadow-black/40 backdrop-blur-xl">
+          <div className="min-w-0 flex-1 px-2">
+            <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-red-300">IP сервера</div>
+            <div className="truncate font-mono text-xs font-black text-white">{SERVER_IP}</div>
+          </div>
+          <CopyButton value={SERVER_IP} label="Копировать" />
+        </div>
+      </div>
+
       <footer className="relative z-10 border-t border-white/[0.06]">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
@@ -1443,13 +1466,14 @@ export default function App() {
           <div className="mt-8 flex flex-col gap-4 border-t border-white/[0.06] pt-5 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
             <div>© {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}</div>
             <div className="flex flex-wrap items-center gap-4">
-            <CopyButton value={SERVER_IP} label="IP сервера" icon={<Server className="h-4 w-4" />} />
-            <a href={VK_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
+              <CopyButton value={SERVER_IP} label="IP сервера" icon={<Server className="h-4 w-4" />} />
+              <a href={VK_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
               VK
             </a>
             <a href={STORE_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
-              Магазин
-            </a>
+                Магазин
+              </a>
+            </div>
           </div>
         </div>
       </footer>
