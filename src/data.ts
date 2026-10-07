@@ -12,11 +12,11 @@ type Section = {
   rules: Rule[];
 };
 
-const SERVER_NAME = "HardlyWorld";
-const SERVER_MODE = "Анархия";
-const SERVER_IP = "mc.HardlyWorld.fun";
-const VK_URL = "https://vk.ru/hardly_world_anarchy";
-const STORE_URL = "https://hardlyworld.fun/";
+export const SERVER_NAME = "HardlyWorld";
+export const SERVER_MODE = "Анархия";
+export const SERVER_IP = "mc.HardlyWorld.fun";
+export const VK_URL = "https://vk.ru/hardly_world_anarchy";
+export const STORE_URL = "https://hardlyworld.fun/";
 
 const RULES_DATA: Section[] = [
   {
@@ -222,7 +222,7 @@ const RULES_DATA: Section[] = [
 
 
 
-const allowedMods = {
+export const allowedMods = {
   "Кликеры, макросы и другие моды": [
     "TapeMouse",
     "AutoClanInvest",
@@ -285,7 +285,7 @@ const allowedMods = {
   ],
 };
 
-const bannedMods = {
+export const bannedMods = {
   "Моды для записи игры": [
     "ReplayMod",
     "IsometricRender",
