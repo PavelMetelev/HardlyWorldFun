@@ -80,7 +80,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
         <div>
           <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-300">Быстрый старт</div>
           <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Как начать играть</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Четыре шага от установки клиента до первого входа на сервер.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">Четыре шага от установки клиента до первого входа на сервер.</p>
         </div>
         <div className="inline-flex items-center gap-2 self-start rounded-xl border border-white/[0.07] bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-400">
           <Server className="h-3.5 w-3.5" /> {SERVER_VERSION} · {SERVER_MODE}
@@ -98,14 +98,14 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
               <span className="h-2 w-2 rounded-full bg-orange-300/70" />
             </div>
             <h3 className="font-black text-white">{title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-500">{text}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{text}</p>
           </div>
         ))}
       </div>
 
       <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">Адрес сервера</div>
+          <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">Адрес сервера</div>
           <div className="mt-1 break-all font-mono text-sm font-bold text-white">{SERVER_IP}</div>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -251,7 +251,7 @@ function ServerStatusCard() {
     <div className="rounded-3xl border border-white/[0.07] bg-white/[0.025] p-3.5 shadow-2xl shadow-black/20 backdrop-blur-md">
       <div className="rounded-2xl border border-white/[0.06] bg-black/30 p-5 md:p-6">
         <div className="mb-5 flex items-center justify-between gap-3">
-          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-300">
             Статус сервера
           </span>
           <span className={"inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-bold " + tone}>
@@ -272,13 +272,13 @@ function ServerStatusCard() {
         <div className="mb-1 break-all font-mono text-2xl font-black tracking-tight text-white md:text-3xl">
           {SERVER_IP}
         </div>
-        <div className="mb-5 text-sm text-slate-500">
+        <div className="mb-5 text-sm text-slate-300">
           Minecraft Java · {SERVER_MODE}
         </div>
 
         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
           <div className="rounded-xl border border-white/[0.06] bg-white/[0.025] p-3">
-            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">
+            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">
               <Users className="h-3.5 w-3.5" /> Онлайн
             </div>
             <div className="text-lg font-black text-white">
@@ -287,7 +287,7 @@ function ServerStatusCard() {
           </div>
 
           <div className="rounded-xl border border-white/[0.06] bg-white/[0.025] p-3">
-            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">
+            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">
               <Server className="h-3.5 w-3.5" /> Версия
             </div>
             <div className="truncate text-lg font-black text-white">
@@ -296,7 +296,7 @@ function ServerStatusCard() {
           </div>
 
           <div className="col-span-2 rounded-xl border border-white/[0.06] bg-white/[0.025] p-3 sm:col-span-1">
-            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">
+            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">
               <Clock3 className="h-3.5 w-3.5" /> Проверка
             </div>
             <div className="text-lg font-black text-white">
@@ -311,7 +311,7 @@ function ServerStatusCard() {
         </div>
 
         {state === "error" && (
-          <div className="mt-3 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-3 text-xs leading-5 text-amber-100/70">
+          <div className="mt-3 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-3 text-xs leading-5 text-amber-100">
             Не удалось получить статус. Нажмите «Обновить» и повторите проверку.
           </div>
         )}
@@ -389,7 +389,7 @@ function RuleCard({
       className="group rounded-2xl border border-white/[0.09] bg-[#0a0e15]/90 p-5 shadow-xl shadow-black/20 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-[#0d121b]/95"
     >
       <div className="flex gap-3.5">
-        <span className="mt-0.5 inline-flex h-8 min-w-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-500">
+        <span className="mt-0.5 inline-flex h-8 min-w-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-300">
           {rule.id}
         </span>
 
@@ -549,19 +549,19 @@ function RulesExplorer() {
       <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-3 backdrop-blur-sm">
         <div className="flex flex-col gap-3 lg:flex-row">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               aria-label="Поиск по правилам"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Найти правило: чит, бан, реклама, 3.5…"
-              className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-10 text-sm text-white outline-none placeholder:text-slate-600 focus:border-white/20 focus:ring-2 focus:ring-white/[0.05]"
+              className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-10 text-sm text-white outline-none placeholder:text-slate-400 focus:border-white/20 focus:ring-2 focus:ring-white/[0.05]"
             />
             {query && (
               <button
                 aria-label="Очистить поиск"
                 onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-600 hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -584,7 +584,7 @@ function RulesExplorer() {
                   "whitespace-nowrap rounded-xl border px-3.5 py-2.5 text-sm font-bold transition " +
                   (filter === value
                     ? "border-white/15 bg-white/[0.08] text-white"
-                    : "border-transparent text-slate-500 hover:text-slate-300")
+                    : "border-transparent text-slate-300 hover:text-slate-300")
                 }
               >
                 {label}
@@ -593,7 +593,7 @@ function RulesExplorer() {
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3 text-xs text-slate-600">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3 text-xs text-slate-400">
           <span>
             <strong className="text-slate-300">{visibleCount}</strong> из {TOTAL_RULES} пунктов
           </span>
@@ -607,7 +607,7 @@ function RulesExplorer() {
         </div>
       </div>
 
-      <div className="mb-7 flex flex-col gap-3 rounded-2xl border border-red-400/10 bg-red-500/[0.035] p-5 text-sm leading-6 text-red-100/75 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-7 flex flex-col gap-3 rounded-2xl border border-red-400/10 bg-red-500/[0.035] p-5 text-sm leading-6 text-red-100 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="mb-1 flex items-center gap-2 font-black text-red-200">
             <AlertTriangle className="h-4 w-4" /> Важно
@@ -623,7 +623,7 @@ function RulesExplorer() {
       </div>
 
       <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4">
-        <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
+        <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
           <BookOpen className="h-3.5 w-3.5" /> Оглавление
         </div>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -642,7 +642,7 @@ function RulesExplorer() {
               </span>
               <span className="min-w-0">
                 <span className="block truncate text-sm font-bold text-slate-200">{section.title}</span>
-                <span className="block text-[11px] text-slate-600">{section.rules.length} пунктов</span>
+                <span className="block text-[11px] text-slate-400">{section.rules.length} пунктов</span>
               </span>
             </button>
           ))}
@@ -654,7 +654,7 @@ function RulesExplorer() {
           <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-orange-300" />
           <div>
             <div className="text-sm font-black text-orange-100">Сайт обновлён 7 октября 2026</div>
-            <div className="mt-0.5 text-xs leading-5 text-slate-500">
+            <div className="mt-0.5 text-xs leading-5 text-slate-300">
               Интерфейс, навигация и проверка сервера обновлены. Сам регламент может меняться администрацией.
             </div>
           </div>
@@ -664,7 +664,7 @@ function RulesExplorer() {
       <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
         <aside className="hidden lg:block">
           <div className="sticky top-24 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-3">
-            <div className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">Разделы</div>
+            <div className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Разделы</div>
             <div className="space-y-1">
               {RULES_DATA.map((section) => (
                 <button
@@ -701,7 +701,7 @@ function RulesExplorer() {
             <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center">
               <Search className="mx-auto mb-3 h-7 w-7 text-slate-700" />
               <div className="font-black text-white">Ничего не найдено</div>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-slate-400">
                 Попробуйте другой запрос или снимите фильтр наказания.
               </p>
             </div>
@@ -794,7 +794,7 @@ function ModsExplorer() {
             </span>
             <div>
               <h3 className="font-black text-white">{title}</h3>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-400">
                 {good ? TOTAL_ALLOWED_MODS : TOTAL_BANNED_MODS} в списке
               </p>
             </div>
@@ -851,9 +851,9 @@ function ModsExplorer() {
                       </span>
                     </span>
                     {isOpen ? (
-                      <ChevronUp className="h-4 w-4 text-slate-600" />
+                      <ChevronUp className="h-4 w-4 text-slate-400" />
                     ) : (
-                      <ChevronDown className="h-4 w-4 text-slate-600" />
+                      <ChevronDown className="h-4 w-4 text-slate-400" />
                     )}
                   </button>
 
@@ -887,7 +887,7 @@ function ModsExplorer() {
               );
             })
           ) : (
-            <div className="rounded-xl border border-dashed border-white/10 p-8 text-center text-sm text-slate-600">
+            <div className="rounded-xl border border-dashed border-white/10 p-8 text-center text-sm text-slate-400">
               Ничего не найдено
             </div>
           )}
@@ -902,7 +902,7 @@ function ModsExplorer() {
                 ...Object.fromEntries(categories.map((category) => [category, shouldOpen])),
               }));
             }}
-            className="mt-4 text-xs font-bold text-slate-500 hover:text-white"
+            className="mt-4 text-xs font-bold text-slate-300 hover:text-white"
           >
             {categories.some((category) => !(open[category] ?? true))
               ? "Раскрыть категории"
@@ -930,12 +930,12 @@ function ModsExplorer() {
       <div className="mb-5 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-3">
         <div className="flex flex-col gap-3 lg:flex-row">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Найти мод: XRay, Baritone, Jade…"
-              className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-slate-600 focus:border-white/20"
+              className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-slate-400 focus:border-white/20"
             />
           </div>
 
@@ -954,7 +954,7 @@ function ModsExplorer() {
                   "whitespace-nowrap rounded-xl border px-4 py-2.5 text-sm font-bold transition " +
                   (tab === value
                     ? "border-white/15 bg-white/[0.09] text-white"
-                    : "border-transparent text-slate-500 hover:text-slate-300")
+                    : "border-transparent text-slate-300 hover:text-slate-300")
                 }
               >
                 {label}
@@ -963,7 +963,7 @@ function ModsExplorer() {
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3 text-xs text-slate-600">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3 text-xs text-slate-400">
           <span>
             <strong className="text-slate-300">
               {filtered.reduce((sum, item) => sum + item.mods.length, 0)}
@@ -1004,7 +1004,7 @@ function ModsExplorer() {
               )}
             </div>
             <div>
-              <div className="text-xs font-bold uppercase tracking-wide text-slate-500">
+              <div className="text-xs font-bold uppercase tracking-wide text-slate-300">
                 Точный результат
               </div>
               <div className="font-black text-white">{exact.name}</div>
@@ -1033,7 +1033,7 @@ function ModsExplorer() {
             </div>
             <div>
               <div className="font-black text-white">Мод не найден в официальном списке</div>
-              <p className="mt-1 text-sm leading-6 text-slate-500">
+              <p className="mt-1 text-sm leading-6 text-slate-300">
                 «{query}» не найден среди разрешённых или запрещённых модов. Это не означает, что он разрешён — уточни статус у администрации проекта.
               </p>
             </div>
@@ -1056,7 +1056,7 @@ function ModsExplorer() {
           )}
       </div>
 
-      <div className="mt-4 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-4 text-xs leading-5 text-amber-100/65">
+      <div className="mt-4 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-4 text-xs leading-5 text-amber-100">
         <span className="font-bold text-amber-200">Важно:</span> перед игрой сверяйтесь с актуальным списком. Наличие похожего мода не означает автоматически, что разрешены все его версии.
       </div>
     </section>
@@ -1122,7 +1122,7 @@ export default function App() {
             </span>
             <span className="text-left">
               <span className="block text-sm font-black tracking-tight text-white">{SERVER_NAME}</span>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">{SERVER_MODE}</span>
+              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">{SERVER_MODE}</span>
             </span>
           </button>
 
@@ -1140,7 +1140,7 @@ export default function App() {
                   "rounded-lg px-3 py-2 text-sm font-semibold transition " +
                   (active === id
                     ? "bg-white/[0.06] text-white"
-                    : "text-slate-500 hover:text-white")
+                    : "text-slate-300 hover:text-white")
                 }
               >
                 {label}
@@ -1150,7 +1150,7 @@ export default function App() {
               href={STORE_URL}
               target="_blank"
               rel="noreferrer"
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-white"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-300 transition hover:text-white"
             >
               Магазин
             </a>
@@ -1254,7 +1254,7 @@ export default function App() {
                   </span>
                 </h1>
 
-                <p className="mt-6 max-w-2xl text-base leading-7 text-slate-200/85 drop-shadow-lg md:text-lg">
+                <p className="mt-6 max-w-2xl text-base leading-7 text-slate-200 drop-shadow-lg md:text-lg">
                   Анархический Minecraft-проект с понятными правилами, быстрым поиском модов и живым статусом сервера. Всё нужное для входа и игры — в одном месте.
                 </p>
 
@@ -1295,11 +1295,11 @@ export default function App() {
                 >
                   <div className="mb-4 flex items-center justify-between">
                     <span className="font-mono text-xs font-bold text-red-300">0{index + 1}</span>
-                    <Icon className="h-4 w-4 text-slate-300/60" />
+                    <Icon className="h-4 w-4 text-slate-300" />
                   </div>
                   <div className="text-2xl font-black text-white">{value}</div>
                   <div className="mt-0.5 font-bold text-slate-200">{title}</div>
-                  <div className="mt-1 text-sm text-slate-300/60">{desc}</div>
+                  <div className="mt-1 text-sm text-slate-300">{desc}</div>
                 </div>
               ))}
             </div>
@@ -1314,7 +1314,7 @@ export default function App() {
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <ModsExplorer />
 
-        <div className="mt-14 rounded-2xl border border-amber-400/10 bg-amber-500/[0.035] p-5 text-sm leading-6 text-amber-100/70">
+        <div className="mt-14 rounded-2xl border border-amber-400/10 bg-amber-500/[0.035] p-5 text-sm leading-6 text-amber-100">
           <div className="mb-1 flex items-center gap-2 font-black text-amber-200">
             <ShieldAlert className="h-4 w-4" /> Актуальность
           </div>
@@ -1323,7 +1323,7 @@ export default function App() {
       </main>
 
       <footer className="relative z-10 border-t border-white/[0.06]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between md:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-slate-400 md:flex-row md:items-center md:justify-between md:px-6">
           <div>
             © {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}
           </div>
