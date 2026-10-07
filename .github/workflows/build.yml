@@ -30,7 +30,7 @@ jobs:
         if: github.event_name == 'push'
         run: |
           mkdir -p public
-          curl -L --fail --retry 3 --retry-all-errors "https://d2jqrm6oza8nb6.cloudfront.net/datasets/6d17e857-8341-461c-a905-0886d7c14bbd.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMmQ5YjY3MjE2ZTU1MTgxMCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUwNDgwMX0._cozVqBK5eKCVZudSLDI3w9S2HtZaGo9K0KICOLg1KM" -o public/favicon.png
+          curl -L --fail --retry 3 --retry-all-errors "https://d2jqrm6oza8nb6.cloudfront.net/datasets/f0019d7b-2de4-4cdb-b91f-216d3aa401a0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOTUxMWFlNmJkNTcyYjNiZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUzMzU0N30.gKiKZBP67HBEc32xRHXibRy0WIiCldm623Gej8icek" -o public/favicon.png
           file public/favicon.png
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
