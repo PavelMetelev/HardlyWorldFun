@@ -1,12 +1,12 @@
 import React from "react";
-type Rule = {
+export type Rule = {
   id: string;
   text: string;
   punishment: string;
   note?: string;
 };
 
-type Section = {
+export type Section = {
   title: string;
   icon: React.ReactNode;
   rules: Rule[];
