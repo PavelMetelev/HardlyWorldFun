@@ -21,7 +21,7 @@
     <stop offset="1" stop-color="#F97316" stop-opacity="0"/>
   </radialGradient>
   <radialGradient id="aurora" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1050 250) rotate(90) scale(280 720)">
-    <stop stop-color="#6EE7F9" stop-opacity=".25"/>
+    <stop stop-color="#6EE7F9" stop-opacity=".48"/>
     <stop offset=".45" stop-color="#38BDF8" stop-opacity=".08"/>
     <stop offset="1" stop-color="#0B1220" stop-opacity="0"/>
   </radialGradient>
@@ -47,11 +47,11 @@
 </g>
 
 <!-- aurora ribbons -->
-<path d="M540 0C720 120 805 70 930 170C1070 282 1170 96 1340 0" stroke="#67E8F9" stroke-opacity=".17" stroke-width="90" fill="none" filter="url(#soft)"/>
-<path d="M780 0C875 130 1010 70 1120 212C1240 350 1320 135 1510 42" stroke="#A78BFA" stroke-opacity=".14" stroke-width="70" fill="none" filter="url(#soft)"/>
+<path d="M540 0C720 120 805 70 930 170C1070 282 1170 96 1340 0" stroke="#67E8F9" stroke-opacity=".36" stroke-width="90" fill="none" filter="url(#soft)"/>
+<path d="M780 0C875 130 1010 70 1120 212C1240 350 1320 135 1510 42" stroke="#A78BFA" stroke-opacity=".28" stroke-width="70" fill="none" filter="url(#soft)"/>
 
 <!-- distant floating islands -->
-<g opacity=".9">
+<g opacity="1">
   <path d="M160 300L250 264L338 286L305 328L226 347L166 329Z" fill="#1B3442"/>
   <path d="M205 343L294 330L270 385L214 397L176 370Z" fill="#0D1A23"/>
   <path d="M1440 250L1535 216L1626 245L1595 288L1515 309L1452 289Z" fill="#1B3442"/>
@@ -62,7 +62,7 @@
 
 <!-- mountains -->
 <path d="M0 705L155 535L310 650L510 398L718 650L910 455L1110 685L1295 445L1500 645L1695 495L1920 620V900H0V705Z" fill="url(#mountain)"/>
-<path d="M0 760L225 580L390 720L620 520L835 735L1065 540L1295 740L1510 545L1745 730L1920 625V900H0V760Z" fill="#0D1D29"/>
+<path d="M0 760L225 580L390 720L620 520L835 735L1065 540L1295 740L1510 545L1745 730L1920 625V900H0V760Z" fill="#183447"/>
 
 <!-- left castle -->
 <g>
@@ -73,19 +73,19 @@
     <rect x="286" y="472" width="18" height="34" rx="3"/><rect x="379" y="445" width="18" height="34" rx="3"/>
     <rect x="455" y="414" width="18" height="34" rx="3"/><rect x="500" y="505" width="18" height="34" rx="3"/>
   </g>
-  <path d="M110 650C180 570 255 590 315 655C368 714 430 688 500 638" stroke="#5ED6FF" stroke-opacity=".45" stroke-width="16"/>
-  <path d="M105 669C195 604 265 622 320 682C370 736 427 710 507 660" stroke="#B7F0FF" stroke-opacity=".22" stroke-width="5"/>
+  <path d="M110 650C180 570 255 590 315 655C368 714 430 688 500 638" stroke="#5ED6FF" stroke-opacity=".62" stroke-width="16"/>
+  <path d="M105 669C195 604 265 622 320 682C370 736 427 710 507 660" stroke="#B7F0FF" stroke-opacity=".34" stroke-width="5"/>
 </g>
 
 <!-- center bay -->
 <path d="M0 735C230 700 390 748 610 720C820 690 1020 735 1220 705C1450 670 1650 715 1920 685V1200H0V735Z" fill="url(#water)"/>
-<path d="M0 790C230 752 420 812 645 778C860 746 1060 785 1260 758C1475 730 1700 772 1920 742" stroke="#79E9FF" stroke-opacity=".10" stroke-width="8"/>
-<path d="M0 910C250 866 468 925 760 884C1050 845 1270 915 1570 866C1695 846 1810 856 1920 840" stroke="#BEEFFF" stroke-opacity=".06" stroke-width="5"/>
+<path d="M0 790C230 752 420 812 645 778C860 746 1060 785 1260 758C1475 730 1700 772 1920 742" stroke="#79E9FF" stroke-opacity=".18" stroke-width="8"/>
+<path d="M0 910C250 866 468 925 760 884C1050 845 1270 915 1570 866C1695 846 1810 856 1920 840" stroke="#BEEFFF" stroke-opacity=".11" stroke-width="5"/>
 
 <!-- right settlement -->
 <g>
-  <path d="M1370 650L1440 585L1500 610L1545 535L1610 578L1670 520L1730 575L1790 505L1880 570L1920 620V810H1370V650Z" fill="#101920"/>
-  <g fill="#203541">
+  <path d="M1370 650L1440 585L1500 610L1545 535L1610 578L1670 520L1730 575L1790 505L1880 570L1920 620V810H1370V650Z" fill="#213845"/>
+  <g fill="#2C4B59">
     <rect x="1410" y="620" width="85" height="150"/><rect x="1522" y="602" width="74" height="168"/>
     <rect x="1620" y="635" width="96" height="135"/><rect x="1735" y="603" width="82" height="167"/>
     <rect x="1830" y="585" width="72" height="185"/>
@@ -109,12 +109,12 @@
 
 <!-- foreground foliage -->
 <g opacity=".92">
-  <circle cx="85" cy="950" r="100" fill="#081C15"/><circle cx="180" cy="1020" r="130" fill="#092018"/>
-  <circle cx="1825" cy="972" r="145" fill="#081C15"/><circle cx="1718" cy="1040" r="105" fill="#0B221A"/>
+  <circle cx="85" cy="950" r="100" fill="#0A2C20"/><circle cx="180" cy="1020" r="130" fill="#0D3525"/>
+  <circle cx="1825" cy="972" r="145" fill="#081C15"/><circle cx="1718" cy="1040" r="105" fill="#0C2E22"/>
 </g>
 
 <!-- dark cinematic veil -->
-<rect width="1920" height="1200" fill="#02060B" opacity=".24"/>
+<rect width="1920" height="1200" fill="#02060B" opacity=".10"/>
 <rect width="1920" height="1200" fill="url(#grid)"/>
-<rect x="0" y="0" width="1920" height="1200" fill="url(#sky)" opacity=".08"/>
+<rect x="0" y="0" width="1920" height="1200" fill="url(#sky)" opacity=".03"/>
 </svg>
