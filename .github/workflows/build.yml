@@ -26,6 +26,23 @@ jobs:
           fi
           file public/hardlyworld-bg.png
 
+      - name: Sync exact uploaded HW favicon
+        if: github.event_name == 'push'
+        run: |
+          mkdir -p public
+          curl -L --fail --retry 3 --retry-all-errors "https://d2jqrm6oza8nb6.cloudfront.net/datasets/6d17e857-8341-461c-a905-0886d7c14bbd.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMmQ5YjY3MjE2ZTU1MTgxMCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUwNDgwMX0._cozVqBK5eKCVZudSLDI3w9S2HtZaGo9K0KICOLg1KM" -o public/favicon.png
+          file public/favicon.png
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/favicon.png
+          if git diff --cached --quiet; then
+            echo "Favicon already up to date."
+          else
+            git commit -m "Update HardlyWorld favicon"
+            git pull --rebase origin main
+            git push
+          fi
+
       - uses: actions/setup-node@v7
         with:
           node-version: 24
