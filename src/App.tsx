@@ -1119,7 +1119,7 @@ export default function App() {
     <div
       className="relative min-h-screen bg-[#07090d] text-white"
       style={{
-        backgroundImage: "linear-gradient(rgba(5, 8, 13, 0.42), rgba(5, 8, 13, 0.48)), url('https://images.unsplash.com/photo-1509010008-a77006ce0b63?auto=format&fit=crop&fm=jpg&q=86&w=2400')",
+        backgroundImage: "linear-gradient(rgba(5, 8, 13, 0.42), rgba(5, 8, 13, 0.48)), url('https://d2jqrm6oza8nb6.cloudfront.net/datasets/38b0fdd8-0f3f-40dc-a8ce-1d92d1b8b846.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZmFjNDJhYzJhYTU5NTY0ZiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUwMjQwMn0.qpuXzhiN184HXUnn8hTcdDZKMHKUuMsMUe1eeT1GP0g')",
         backgroundAttachment: "fixed",
         backgroundPosition: "center top",
         backgroundRepeat: "no-repeat",
