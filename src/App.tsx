@@ -1,480 +1,399 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  AlertTriangle,
   ArrowRight,
   Ban,
+  BookOpen,
   Check,
   ChevronDown,
   ChevronUp,
   Clipboard,
+  Clock3,
+  Copy,
+  Crown,
+  ExternalLink,
   Flag,
   Info,
+  Link2,
   Menu,
   MessageSquare,
+  RefreshCw,
   Search,
+  Server,
   ShieldAlert,
-  Swords,
-  X,
+  SlidersHorizontal,
   UserCheck,
+  Users,
+  Wifi,
+  X,
   Zap,
-  Crown,
 } from "lucide-react";
+import {
+  ALLOWED_MODS,
+  BANNED_MODS,
+  RULES_DATA,
+  SERVER_IP,
+  SERVER_MODE,
+  SERVER_NAME,
+  STORE_URL,
+  TOTAL_ALLOWED_MODS,
+  TOTAL_BANNED_MODS,
+  TOTAL_RULES,
+  VK_URL,
+  type Rule,
+  type Section as RuleSectionType,
+} from "./data";
 
-type Rule = {
-  id: string;
-  text: string;
-  punishment: string;
-  note?: string;
+type ServerStatus = {
+  state: "loading" | "online" | "offline" | "error";
+  players: number;
+  maxPlayers: number;
+  version: string;
+  checkedAt?: Date;
 };
 
-type Section = {
-  title: string;
-  icon: React.ReactNode;
-  rules: Rule[];
+const sectionIcons: Record<string, React.ReactNode> = {
+  "Правила Чата": <MessageSquare className="h-5 w-5" />,
+  "Блокировка Аккаунта": <Ban className="h-5 w-5" />,
+  "Правила Донатеров": <Crown className="h-5 w-5" />,
+  "Администрация и Модерация": <UserCheck className="h-5 w-5" />,
 };
 
-const SERVER_NAME = "HardlyWorld";
-const SERVER_MODE = "Анархия";
-const SERVER_IP = "mc.HardlyWorld.fun";
-const VK_URL = "https://vk.ru/hardly_world_anarchy";
-const STORE_URL = "https://hardlyworld.fun/";
-
-const RULES_DATA: Section[] = [
-  {
-    title: 'Правила Чата',
-    icon: <MessageSquare className="w-6 h-6" />,
-    rules: [
-      {
-        id: '2.1',
-        text: 'Запрещён флуд/повторение сообщений, символов.',
-        punishment: 'мут на 30 минут',
-        note: 'За спам/флуд в локальный чат / глобальный / личные сообщения - сотрудник вправе выдать наказание. Продублированное сообщение более 3 раз с одинаковой смысловой нагрузкой. Флуд символами считается от 7 символов и выше.'
-      },
-      {
-        id: '2.2',
-        text: 'Запрещено использовать CAPS в более 50% своего сообщения.',
-        punishment: 'мут на 30 минут',
-        note: 'Относится к словам свыше 6-и символов, либо к предложениям, которые состоят из 2-х и более слов.'
-      },
-      {
-        id: '2.3',
-        text: 'Запрещена организация флуда.',
-        punishment: 'мут на 30 минут',
-      },
-      {
-        id: '2.4',
-        text: 'Запрещено попрошайничество у игроков/модерации/администрации.',
-        punishment: 'мут на 60 минут',
-        note: 'Не стоит попрошайничать у кого-либо, Вы только засоряете им чат.'
-      },
-      {
-        id: '2.5',
-        text: 'Запрещены оскорбления/унижения к кому-либо в любой форме.',
-        punishment: 'мут 60 минут',
-        note: 'За оскорбление в локальный чат / глобальный / личные сообщения - сотрудник вправе выдать наказание. Завуалированные оскорбления также считаются нарушением; За слова: "Лёгкий, Ez, Нуб, 0, школьник" наказание не выдаётся.'
-      },
-      {
-        id: '2.6',
-        text: 'Запрещены оскорбления/унижения/упоминания родных.',
-        punishment: 'мут на 180 минут',
-        note: 'Оскорбление родных, считается как оскорбление в сторону игрока. Это крайне низкий поступок, за который игрока накажет администрация/модерация проекта.'
-      },
-      {
-        id: '2.7',
-        text: 'Запрещена пропаганда или агитация, возбуждающая социальную, расовую, национальную или религиозную ненависть и вражду.',
-        punishment: 'мут на 120 минут',
-        note: 'При повторе - Блокировка аккаунта на 1 день.'
-      },
-      {
-        id: '2.8',
-        text: 'Запрещено рекламировать соц.сети TWITCH/VK/YouTube и т.д , не имея статуса YT.',
-        punishment: 'мут на 120 минут',
-        note: 'При повторе - Блокировка аккаунта на 7 дней.'
-      },
-    ]
-  },
-  {
-    title: 'Блокировка Аккаунта',
-    icon: <Ban className="w-6 h-6" />,
-    rules: [
-      {
-        id: '3.2',
-        text: 'Использование/Хранение сторонних ПО: (Читов/Макросов/Модов, дающих преимущество в игре), Троллинг во время проверки, Выход во время проверки на читы, Отказ от проверки на читы, Оскорбления на проверке',
-        punishment: 'бан на 30 дней по IP',
-        note: 'Хранение, удаление менее 20-ти дней назад, использование запрещённых программ.'
-      },
-      {
-        id: '3.2.1',
-        text: 'Признание в запрещённом ПО',
-        punishment: 'бан на 20 дней',
-        note: 'Если вы пишите в глобал/локал/лс "я читер" и т.д, это расценивается как признание.'
-      },
-      {
-        id: '3.2.2',
-        text: '🔹 Запрещено пользоваться всем, что упрощает процесс игры.',
-        punishment: 'бан на 90 дней',
-        note: 'Запрещено пользоваться любыми средствами, которые дают упрощение игрового процесса или преимущества в игре.'
-      },
-      {
-        id: '3.3',
-        text: 'Тим с читером',
-        punishment: 'бан на 10 дней по IP',
-      },
-      {
-        id: '3.4',
-        text: 'Использование недоработок сервера/Дюпов/багов.',
-        punishment: 'бан по айпи на 7 дней',
-        note: 'Багоюз киркой также карается баном.'
-      },
-      {
-        id: '3.5',
-        text: 'Реклама сторонних проектов/Магазинов/ПО/Ютуберов',
-        punishment: 'бан на 30 дней по IP',
-        note: 'Скрытая, на табличках, на название мобов и так далее, будет является - рекламой.'
-      },
-      {
-        id: '3.6',
-        text: 'Оскорбление сервера',
-        punishment: 'бан на 12 часов',
-        note: 'Завуалированные оскорбления также считаются нарушением пункта.'
-      },
-      {
-        id: '3.7',
-        text: 'Попытка взлома аккаунта.',
-        punishment: 'бан на 90 дней по IP',
-        note: 'Попытка узнать пароль или иные данные для входа в аккаунт.'
-      },
-      {
-        id: '3.8',
-        text: 'Передача/Попытка передачи аккаунта 3-им лицам.',
-        punishment: 'бан на 14 дней',
-        note: 'Данное правило действует, если игрок зайдет с другого IP адреса, а не с одного устройства/IP.'
-      },
-      {
-        id: '3.9',
-        text: 'Операция с реальными деньгами',
-        punishment: 'бан на 30 дней',
-        note: 'Попытка/Продажа виртуальных рублей, вещей и других предметов.'
-      },
-      {
-        id: '3.10',
-        text: 'Запрещённы любые виды трапок',
-        punishment: 'бан на 3 дня',
-      },
-      {
-        id: '3.11',
-        text: 'Постройка/использование/распространение уязвимостей сервера, независимо от их реализуемости и практичности.',
-        punishment: 'бан навсегда по IP',
-        note: 'Постройки данного типа считаются некорректными и требуют сноса.'
-      },
-      {
-        id: '3.12',
-        text: 'Постройка, не соответствующая нравственным нормам (флаги стран, свастики, половые органы и т.д).',
-        punishment: ' бан 1 день',
-        note: 'Постройки данного типа считаются некорректными и требуют сноса.'
-      },
-      {
-        id: '3.13',
-        text: 'Обход мута через /bc, /ad',
-        punishment: 'бан на 6 часов',
-        note: 'Запрещено писать в чат через /bc, /ad, когда на вас наложен мут'
-      },
-      {
-        id: '3.13.1',
-        text: 'Обход мута с помощью второго аккаунта',
-        punishment: 'бан на 8 часов',
-      },
-    ]
-  },
-  {
-    title: 'Правила Донатеров',
-    icon: <Crown className="w-6 h-6" />,
-    rules: [
-      {
-        id: '4.2',
-        text: 'Выдача бана/мута без доказательств.',
-        punishment: 'бан на 7 дней',
-        note: 'Администратор в праве потребовать доказательства о муте/бане. При отсутствии доказательств выдается наказание.'
-      },
-      {
-        id: '4.3',
-        text: 'Выдача Бана/Мута с некорректной причиной.',
-        punishment: 'бан на 7 дней',
-        note: 'Каждое доказательство должно быть правильно оформлено. При выдачи Банов/Мутов, требуется указывать пункт или причину наказания.'
-      },
-      {
-        id: '4.4',
-        text: 'Запрещено использование команд не по назначению.',
-        punishment: 'бан на 7 дней',
-      },
-    ]
-  },
-  {
-    title: 'Администрация и Модерация',
-    icon: <UserCheck className="w-6 h-6" />,
-    rules: [
-      {
-        id: '5.1',
-        text: 'Оскорбление/унижение администрации.',
-        punishment: 'бан на 1 день',
-        note: 'За любое оскорбление/унижение в локальный чат / глобальный / личные сообщения- Сотрудник вправе Вас заблокировать, если посчитает нужным. Завуалированные оскорбления так же считаются нарушением пункта.'
-      },
-      {
-        id: '5.2',
-        text: 'Ввод администрации в заблуждение.',
-        punishment: 'бан на 5 дней',
-        note: 'Даже при попытке обмана сотрудника в соц.сетях влечёт за собой наказание на сервере.'
-      },
-      {
-        id: '5.3',
-        text: 'Выдача себя за администрацию.',
-        punishment: 'бан на 2 дня',
-        note: 'Игрока могут привлечь за данный пункт, даже если игрок является сотрудником другого проекта.'
-      },
-      {
-        id: '5.4',
-        text: 'Любая помеха в работе администрации/модерации.',
-        punishment: 'бан на 12 часов',
-        note: 'Перед выдачей наказания сотрудник обязан предупредить Вас, к примеру покинуть территорию в которой введётся работа администрации/модерации. В случае, если Вы откажетесь покидать территорию или проигнорируете его, Вы будете привлечены к данному пункту наказания.'
-      },
-    ]
-  },
-];
-
-
-
-const allowedMods = {
-  "Кликеры, макросы и другие моды": [
-    "TapeMouse",
-    "AutoClanInvest",
-    "AutoTrade",
-    "AutoTransfer",
-    "TopkaAutoDrop",
-    "AutoDrop",
-    "AutoEat",
-    "MacroKeybinds",
-  ],
-  "Визуальные эффекты и клиенты": [
-    "PulseVisuals",
-    "TopkaVisuals",
-    "CustomBlockOverlay",
-    "TrajectoryGuard",
-    "ViewModel-Changer",
-    "RainVisuals",
-    "Do a Barrel Roll",
-    "MoonLightClient",
-    "SoupApi (SoupVisuals)",
-    "SoupBetter",
-    "PhantomVisuals",
-    "Mytheria",
-    "KastrixVisuals",
-    "RivalVisuals",
-    "DestraVisuals",
-    "ReallyVisuals",
-    "GammaUtils",
-    "Stark Helper",
-  ],
-  "Иные разрешённые моды": [
-    "rct",
-    "PRIME PARTS",
-    "Chunks fade in",
-    "berdinskiybear's armor hud",
-    "AntiGhost",
-    "TopkaTags",
-    "ContainerSearcher",
-    "ItemLocks",
-    "Giselbaer's Durability Viewer",
-    "MiniHUD",
-    "TopkaHealth",
-    "ExitLag",
-    "Abstract",
-    "Custom FOV",
-    "Show Yourself",
-    "Jade",
-    "JJElytraSwap",
-    "InventoryCleaner",
-    "VisualRatio",
-    "AxolotlClient",
-    "ItemScroller",
-    "NoHurtCam",
-    "LavaClearWater",
-    "BetterHitReg",
-    "ZakoHealthIndicator",
-    "Pearl Trajectory",
-    "wWaypoints",
-    "Feather Client",
-  ],
-};
-
-const bannedMods = {
-  "Моды для записи игры": [
-    "ReplayMod",
-    "IsometricRender",
-    "CmdCam",
-    "WorldDownloader",
-    "Flashback",
-  ],
-  "Автодобыча и использование ресурсов": [
-    "AutoMining",
-    "ReplantingCrops",
-    "AutoHarvest",
-    "Reap",
-    "Tweakeroo",
-    "AutoFish",
-    "Accurate Block Placement",
-    "Baritone",
-  ],
-  "Подсветка игроков / мобов / блоков": [
-    "Player Spotlight",
-    "AucHelper",
-    "ChestTracker",
-    "Friend Highlighter",
-    "Donut Auctions",
-    "XRay",
-    "DiamondGen",
-    "FreeCam",
-    "BaseFinder",
-    "TrueSight",
-    "МиниКарты (кроме Lunar Client)",
-    "Neat",
-    "ChunkAnimator",
-    "MobHealthBar",
-    "Litematica / Schematica",
-    "block-entity-tooltip",
-    "WorldEdit",
-    "Better PVP",
-    "WorldDownloader",
-    "RemoveBlindness (и аналоги)",
-    "Re:Entity Outline",
-    "AntiInvis",
-    "Cooldowns HUD (UseTracker)",
-    "CheatUtils",
-    "No Darkness Effect",
-    "funtime-ah-helper",
-  ],
-  "Автоматизация функционала сервера": [
-    "AutoBuy (и аналоги)",
-    "AutoSell (и аналоги)",
-    "AutoCasino",
-    "AutoPilot",
-  ],
-  "Автоматизация ПВП и инвентаря": [
-    "InventoryControlTweaks",
-    "AutoLeave",
-    "Foodslot",
-    "Quickstack",
-    "ItemSwap",
-    "AutoTool",
-    "Movement in GUI",
-    "FasterBlockPlacement",
-    "Firework Helper",
-    "Effortless Building",
-    "InvMove",
-    "Inventory Profiles Next",
-    "autojumpreset",
-  ],
-  "Изменение условий PvP": [
-    "Dont Heat Teammates",
-    "Don't hit teammates",
-    "CleanCut",
-    "AutoAttack",
-    "AutoAim",
-  ],
-  "Иные запрещённые моды": [
-    "FeverVisuals",
-    "LuminarVisuals",
-    "Ascart",
-    "Badlion Client",
-    "Эмуляторы / лаунчеры мобильных устройств (Pojav, FCL и т.п.)",
-    "SimpleVisuals",
-    "SoupApi (версии ниже 3.0.0)",
-    "WaveVisuals",
-    "ClientCommands",
-    "Взломанные версии мультимодификаций",
-    "Самостоятельно модифицированные мультимодификации",
-  ],
-};
-
-
-
-const allowedIcons: Record<string, React.ReactNode> = {
+const modIcons: Record<string, React.ReactNode> = {
   "Кликеры, макросы и другие моды": <Zap className="h-4 w-4" />,
-  "Визуальные эффекты и клиенты": <Swords className="h-4 w-4" />,
+  "Визуальные эффекты и клиенты": <Wifi className="h-4 w-4" />,
   "Иные разрешённые моды": <Check className="h-4 w-4" />,
-};
-const bannedIcons: Record<string, React.ReactNode> = {
   "Моды для записи игры": <Flag className="h-4 w-4" />,
-  "Автодобыча и использование ресурсов": <Swords className="h-4 w-4" />,
+  "Автодобыча и использование ресурсов": <Zap className="h-4 w-4" />,
   "Подсветка игроков / мобов / блоков": <ShieldAlert className="h-4 w-4" />,
-  "Автоматизация функционала сервера": <Zap className="h-4 w-4" />,
+  "Автоматизация функционала сервера": <RefreshCw className="h-4 w-4" />,
   "Автоматизация ПВП и инвентаря": <Crown className="h-4 w-4" />,
   "Изменение условий PvP": <Ban className="h-4 w-4" />,
   "Иные запрещённые моды": <X className="h-4 w-4" />,
 };
 
-function CopyButton({ value }: { value: string }) {
+function useServerStatus() {
+  const [status, setStatus] = useState<ServerStatus>({
+    state: "loading",
+    players: 0,
+    maxPlayers: 0,
+    version: "—",
+  });
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const load = async () => {
+      try {
+        const response = await fetch(
+          "https://api.mcsrvstat.us/3/" + encodeURIComponent(SERVER_IP),
+          {
+            signal: controller.signal,
+            headers: {
+              Accept: "application/json",
+              "User-Agent": "HardlyWorld/1.0",
+            },
+          },
+        );
+
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        const data = await response.json();
+
+        setStatus({
+          state: data.online ? "online" : "offline",
+          players: data.players?.online ?? 0,
+          maxPlayers: data.players?.max ?? 0,
+          version: data.version ?? data.protocol?.name ?? "неизвестно",
+          checkedAt: new Date(),
+        });
+      } catch {
+        if (!controller.signal.aborted) {
+          setStatus((current) => ({
+            ...current,
+            state: "error",
+            checkedAt: new Date(),
+          }));
+        }
+      }
+    };
+
+    load();
+    return () => controller.abort();
+  }, [tick]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setTick((value) => value + 1), 300000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return {
+    ...status,
+    refresh: () => setTick((value) => value + 1),
+  };
+}
+
+function CopyButton({
+  value,
+  label = "Копировать IP",
+  icon = <Clipboard className="h-4 w-4" />,
+}: {
+  value: string;
+  label?: string;
+  icon?: React.ReactNode;
+}) {
   const [copied, setCopied] = useState(false);
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
-      // Clipboard can be unavailable in some embedded contexts.
+      setCopied(false);
     }
   };
+
   return (
-    <button onClick={copy} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/[0.1]">
-      {copied ? <Check className="h-4 w-4 text-emerald-300" /> : <Clipboard className="h-4 w-4 text-slate-400" />}
-      {copied ? "Скопировано" : "Копировать IP"}
+    <button
+      onClick={copy}
+      title={label}
+      className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-3.5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+    >
+      {copied ? <Check className="h-4 w-4 text-emerald-300" /> : icon}
+      {copied ? "Скопировано" : label}
     </button>
   );
 }
 
-function RuleCard({ rule }: { rule: Rule }) {
+function ServerStatusCard() {
+  const { state, players, maxPlayers, version, checkedAt, refresh } = useServerStatus();
+  const label =
+    state === "loading"
+      ? "Проверяем…"
+      : state === "online"
+        ? "Онлайн"
+        : state === "offline"
+          ? "Оффлайн"
+          : "Нет ответа";
+
+  const tone =
+    state === "online"
+      ? "border-emerald-400/10 bg-emerald-500/[0.07] text-emerald-300"
+      : state === "offline"
+        ? "border-red-400/10 bg-red-500/[0.07] text-red-300"
+        : "border-white/10 bg-white/[0.05] text-slate-300";
+
+  return (
+    <div className="rounded-3xl border border-white/[0.07] bg-white/[0.025] p-3.5 shadow-2xl shadow-black/20 backdrop-blur-md">
+      <div className="rounded-2xl border border-white/[0.06] bg-black/20 p-5 md:p-6">
+        <div className="mb-5 flex items-center justify-between gap-3">
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+            Статус сервера
+          </span>
+          <span className={"inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-bold " + tone}>
+            <span
+              className={
+                "h-1.5 w-1.5 rounded-full " +
+                (state === "online"
+                  ? "bg-emerald-400 animate-pulse"
+                  : state === "offline"
+                    ? "bg-red-400"
+                    : "bg-slate-400")
+              }
+            />
+            {label}
+          </span>
+        </div>
+
+        <div className="mb-1 break-all font-mono text-2xl font-black tracking-tight text-white md:text-3xl">
+          {SERVER_IP}
+        </div>
+        <div className="mb-5 text-sm text-slate-500">
+          Minecraft Java · {SERVER_MODE}
+        </div>
+
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.025] p-3">
+            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">
+              <Users className="h-3.5 w-3.5" /> Онлайн
+            </div>
+            <div className="text-lg font-black text-white">
+              {state === "online" ? players + "/" + (maxPlayers || "∞") : "—"}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.025] p-3">
+            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">
+              <Server className="h-3.5 w-3.5" /> Версия
+            </div>
+            <div className="truncate text-lg font-black text-white">
+              {state === "online" ? version : "—"}
+            </div>
+          </div>
+
+          <div className="col-span-2 rounded-xl border border-white/[0.06] bg-white/[0.025] p-3 sm:col-span-1">
+            <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">
+              <Clock3 className="h-3.5 w-3.5" /> Проверка
+            </div>
+            <div className="text-lg font-black text-white">
+              {checkedAt
+                ? checkedAt.toLocaleTimeString("ru-RU", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "—"}
+            </div>
+          </div>
+        </div>
+
+        {state === "error" && (
+          <div className="mt-3 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-3 text-xs leading-5 text-amber-100/70">
+            Не удалось получить статус. Нажмите «Обновить» и повторите проверку.
+          </div>
+        )}
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          <CopyButton value={SERVER_IP} />
+          <button
+            onClick={refresh}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm font-semibold text-slate-300 transition hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-white"
+          >
+            <RefreshCw className={"h-4 w-4 " + (state === "loading" ? "animate-spin" : "")} />
+            Обновить
+          </button>
+          <a
+            href={STORE_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm font-semibold text-slate-300 transition hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-white"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Магазин
+          </a>
+        </div>
+
+        <div className="mt-3 text-[10px] leading-4 text-slate-700">
+          Данные могут отображаться с задержкой: внешний сервис кэширует результаты.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RuleHighlight({ text, query }: { text: string; query: string }) {
+  const clean = query.trim();
+  if (!clean) return <>{text}</>;
+
+  const escaped = clean.replace(/[.*+?^|(){}[\]\\]/g, "\\$&");
+  const parts = text.split(new RegExp("(" + escaped + ")", "ig"));
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.toLowerCase() === clean.toLowerCase() ? (
+          <mark key={index} className="rounded bg-amber-300/25 px-0.5 text-amber-100">
+            {part}
+          </mark>
+        ) : (
+          <React.Fragment key={index}>{part}</React.Fragment>
+        ),
+      )}
+    </>
+  );
+}
+
+function RuleCard({
+  rule,
+  openCommand,
+  query,
+}: {
+  rule: Rule;
+  openCommand: "open" | "closed" | "none";
+  query: string;
+}) {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (openCommand === "open") setOpen(true);
+    if (openCommand === "closed") setOpen(false);
+  }, [openCommand]);
+
+  const copyRuleLink = async () => {
+    const hash = "rule-" + rule.id.replaceAll(".", "-");
+    const url = window.location.origin + window.location.pathname + "#" + hash;
+    window.history.replaceState(null, "", "#" + hash);
+
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {}
+  };
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 18 }}
+      id={"rule-" + rule.id.replaceAll(".", "-")}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.35 }}
-      className="group rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.045]"
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.28 }}
+      className="group rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5 transition hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.045]"
     >
-      <div className="flex gap-4">
-        <span className="mt-0.5 inline-flex h-8 min-w-12 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-500">
+      <div className="flex gap-3.5">
+        <span className="mt-0.5 inline-flex h-8 min-w-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 px-2 font-mono text-xs font-bold text-slate-500">
           {rule.id}
         </span>
+
         <div className="min-w-0 flex-1">
-          <p className="text-base leading-7 text-slate-100 md:text-[17px]">{rule.text}</p>
+          <p className="text-[15px] leading-7 text-slate-100 md:text-[17px]">
+            <RuleHighlight text={rule.text} query={query} />
+          </p>
+
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Наказание</span>
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+              <Clock3 className="h-3.5 w-3.5" /> Наказание
+            </span>
             <span className="rounded-full border border-red-400/15 bg-red-500/[0.07] px-2.5 py-1 text-sm font-bold text-red-300">
-              {rule.punishment}
+              <RuleHighlight text={rule.punishment} query={query} />
             </span>
           </div>
-          {rule.note && (
-            <div className="mt-4">
-              <button onClick={() => setOpen(v => !v)} className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition hover:text-white">
+
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            {rule.note && (
+              <button
+                onClick={() => setOpen((value) => !value)}
+                className="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold text-slate-400 transition hover:bg-white/[0.04] hover:text-white"
+              >
                 <Info className="h-4 w-4" />
                 {open ? "Скрыть примечание" : "Показать примечание"}
                 {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </button>
-              <AnimatePresence initial={false}>
-                {open && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="mt-3 rounded-xl border border-white/[0.06] bg-black/20 p-4 text-sm leading-6 text-slate-400">
-                      {rule.note}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            )}
+
+            <button
+              onClick={copyRuleLink}
+              className="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold text-slate-500 transition hover:bg-white/[0.04] hover:text-slate-200"
+              title="Скопировать ссылку на правило"
+            >
+              <Link2 className="h-4 w-4" /> Ссылка
+            </button>
+          </div>
+
+          {rule.note && (
+            <AnimatePresence initial={false}>
+              {open && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-3 rounded-xl border border-white/[0.06] bg-black/20 p-4 text-sm leading-6 text-slate-400">
+                    <RuleHighlight text={rule.note} query={query} />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           )}
         </div>
       </div>
@@ -482,152 +401,604 @@ function RuleCard({ rule }: { rule: Rule }) {
   );
 }
 
-function RuleSection({ section }: { section: Section }) {
+function RuleSection({
+  section,
+  rules,
+  openCommand,
+  query,
+}: {
+  section: RuleSectionType;
+  rules: Rule[];
+  openCommand: "open" | "closed" | "none";
+  query: string;
+}) {
+  if (!rules.length) return null;
+
   return (
     <section className="scroll-mt-28">
-      <div className="mb-5 flex items-end justify-between gap-4">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-red-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-            Раздел
+          <div className="mb-2 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-400" /> Раздел
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-red-400/15 bg-red-500/[0.08] text-red-300">
-              {section.icon}
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-red-400/15 bg-red-500/[0.08] text-red-300">
+              {sectionIcons[section.title]}
             </div>
-            <h3 className="text-2xl font-black tracking-tight text-white md:text-3xl">{section.title}</h3>
+            <h3 className="text-2xl font-black tracking-tight text-white md:text-3xl">
+              {section.title}
+            </h3>
           </div>
         </div>
-        <span className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-slate-500 md:inline-flex">
-          {section.rules.length} пунктов
+        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-slate-500">
+          {rules.length} из {section.rules.length}
         </span>
       </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
-        {section.rules.map(rule => <RuleCard key={rule.id} rule={rule} />)}
+        {rules.map((rule) => (
+          <RuleCard key={rule.id} rule={rule} openCommand={openCommand} query={query} />
+        ))}
       </div>
     </section>
   );
 }
 
-function ModsSection() {
+function RulesExplorer() {
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<"all" | "mute" | "ban" | "forever">("all");
+  const [openCommand, setOpenCommand] = useState<"open" | "closed" | "none">("none");
+  const normalized = query.trim().toLowerCase();
+
+  const filtered = useMemo(
+    () =>
+      RULES_DATA.map((section) => ({
+        section,
+        rules: section.rules.filter((rule) => {
+          const haystack = (
+            rule.id +
+            " " +
+            rule.text +
+            " " +
+            rule.punishment +
+            " " +
+            (rule.note ?? "")
+          ).toLowerCase();
+
+          const queryMatch = !normalized || haystack.includes(normalized);
+          const punishment = rule.punishment.toLowerCase();
+          const punishmentMatch =
+            filter === "all" ||
+            (filter === "mute" && punishment.includes("мут")) ||
+            (filter === "ban" && punishment.includes("бан") && !punishment.includes("навсегда")) ||
+            (filter === "forever" && punishment.includes("навсегда"));
+
+          return queryMatch && punishmentMatch;
+        }),
+      })).filter((entry) => entry.rules.length),
+    [normalized, filter],
+  );
+
+  const visibleCount = filtered.reduce((sum, entry) => sum + entry.rules.length, 0);
+
+  useEffect(() => {
+    const hash = window.location.hash.match(/^#rule-(.+)$/);
+    if (!hash) return;
+
+    window.setTimeout(() => {
+      document
+        .getElementById("rule-" + hash[1])
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 150);
+  }, []);
+
+  return (
+    <section id="rules" className="scroll-mt-28">
+      <div className="mb-8 max-w-3xl">
+        <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-300">
+          <BookOpen className="h-3.5 w-3.5" /> Регламент проекта
+        </div>
+        <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">Правила сервера</h2>
+        <p className="mt-3 text-slate-400">
+          Поиск по номеру и тексту, фильтр по наказанию и персональная ссылка на каждый пункт.
+        </p>
+      </div>
+
+      <div className="mb-6 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-3 backdrop-blur-sm">
+        <div className="flex flex-col gap-3 lg:flex-row">
+          <div className="relative flex-1">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Найти правило: чит, бан, реклама, 3.5…"
+              className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-10 text-sm text-white outline-none placeholder:text-slate-600 focus:border-white/20 focus:ring-2 focus:ring-white/[0.05]"
+            />
+            {query && (
+              <button
+                aria-label="Очистить поиск"
+                onClick={() => setQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-600 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto">
+            {(
+              [
+                ["all", "Все"],
+                ["mute", "Муты"],
+                ["ban", "Баны"],
+                ["forever", "Навсегда"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                onClick={() => setFilter(value)}
+                className={
+                  "whitespace-nowrap rounded-xl border px-3.5 py-2.5 text-sm font-bold transition " +
+                  (filter === value
+                    ? "border-white/15 bg-white/[0.08] text-white"
+                    : "border-transparent text-slate-500 hover:text-slate-300")
+                }
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3 text-xs text-slate-600">
+          <span>
+            <strong className="text-slate-300">{visibleCount}</strong> из {TOTAL_RULES} пунктов
+          </span>
+          <button
+            onClick={() => setOpenCommand((value) => (value === "open" ? "closed" : "open"))}
+            className="inline-flex items-center gap-2 font-semibold text-slate-400 hover:text-white"
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            {openCommand === "open" ? "Свернуть примечания" : "Открыть примечания"}
+          </button>
+        </div>
+      </div>
+
+      <div className="mb-9 rounded-2xl border border-red-400/10 bg-red-500/[0.035] p-5 text-sm leading-6 text-red-100/75">
+        <div className="mb-1 flex items-center gap-2 font-black text-red-200">
+          <AlertTriangle className="h-4 w-4" /> Важно
+        </div>
+        Данный свод правил может быть изменён в любой момент, и администрация оставляет за собой право не оповещать игроков об изменениях.
+      </div>
+
+      {filtered.length ? (
+        <div className="space-y-16">
+          {filtered.map(({ section, rules }) => (
+            <RuleSection
+              key={section.title}
+              section={section}
+              rules={rules}
+              openCommand={openCommand}
+              query={query}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center">
+          <Search className="mx-auto mb-3 h-7 w-7 text-slate-700" />
+          <div className="font-black text-white">Ничего не найдено</div>
+          <p className="mt-1 text-sm text-slate-600">
+            Попробуйте другой запрос или снимите фильтр наказания.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ModsExplorer() {
   const [tab, setTab] = useState<"all" | "allowed" | "banned">("all");
-  const [search, setSearch] = useState("");
-  const allowed = Object.entries(allowedMods);
-  const banned = Object.entries(bannedMods);
-  const filter = (items: [string, string[]][]) =>
-    items.map(([category, mods]) => [category, mods.filter(m => m.toLowerCase().includes(search.toLowerCase()))] as [string, string[]])
-      .filter(([, mods]) => mods.length);
-  const filteredAllowed = filter(allowed);
-  const filteredBanned = filter(banned);
-  const totalAllowed = Object.values(allowedMods).flat().length;
-  const totalBanned = Object.values(bannedMods).flat().length;
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+  const normalized = query.trim().toLowerCase();
+
+  const entries = [
+    ...Object.entries(ALLOWED_MODS).map(([category, mods]) => ({
+      category,
+      mods,
+      type: "allowed" as const,
+    })),
+    ...Object.entries(BANNED_MODS).map(([category, mods]) => ({
+      category,
+      mods,
+      type: "banned" as const,
+    })),
+  ];
+
+  const filtered = entries
+    .filter((item) => tab === "all" || item.type === tab)
+    .map((item) => ({
+      ...item,
+      mods: item.mods.filter((mod) => mod.toLowerCase().includes(normalized)),
+    }))
+    .filter((item) => item.mods.length);
+
+  const exact = useMemo(() => {
+    if (!normalized) return null;
+
+    const allowed = Object.values(ALLOWED_MODS)
+      .flat()
+      .find((mod) => mod.toLowerCase() === normalized);
+
+    if (allowed) return { name: allowed, allowed: true };
+
+    const banned = Object.values(BANNED_MODS)
+      .flat()
+      .find((mod) => mod.toLowerCase() === normalized);
+
+    return banned ? { name: banned, allowed: false } : null;
+  }, [normalized]);
+
+  const copyList = async () => {
+    const lines = filtered.flatMap((item) =>
+      item.mods.map((mod) => (item.type === "allowed" ? "✅ " : "❌ ") + mod),
+    );
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+    } catch {}
+  };
+
+  const renderColumn = (
+    title: string,
+    items: typeof filtered,
+    good: boolean,
+  ) => {
+    const categories = items.map((item) => item.category);
+
+    return (
+      <div
+        className={
+          "rounded-2xl border p-4 " +
+          (good
+            ? "border-emerald-400/10 bg-emerald-500/[0.025]"
+            : "border-red-400/10 bg-red-500/[0.025]")
+        }
+      >
+        <div className="mb-4 flex items-center justify-between gap-3 border-b border-white/[0.06] px-2 pb-4">
+          <div className="flex items-center gap-3">
+            <span
+              className={
+                "flex h-10 w-10 items-center justify-center rounded-xl " +
+                (good
+                  ? "bg-emerald-500/10 text-emerald-300"
+                  : "bg-red-500/10 text-red-300")
+              }
+            >
+              {good ? <Check className="h-5 w-5" /> : <Ban className="h-5 w-5" />}
+            </span>
+            <div>
+              <h3 className="font-black text-white">{title}</h3>
+              <p className="text-xs text-slate-600">
+                {good ? TOTAL_ALLOWED_MODS : TOTAL_BANNED_MODS} в списке
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {items.length ? (
+            items.map(({ category, mods }) => {
+              const isOpen = open[category] ?? true;
+
+              return (
+                <div
+                  key={category}
+                  className={
+                    "rounded-xl border " +
+                    (good
+                      ? "border-emerald-400/10 bg-emerald-500/[0.025]"
+                      : "border-red-400/10 bg-red-500/[0.025]")
+                  }
+                >
+                  <button
+                    onClick={() =>
+                      setOpen((current) => ({
+                        ...current,
+                        [category]: !isOpen,
+                      }))
+                    }
+                    className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span
+                        className={
+                          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg " +
+                          (good
+                            ? "bg-emerald-500/10 text-emerald-300"
+                            : "bg-red-500/10 text-red-300")
+                        }
+                      >
+                        {modIcons[category]}
+                      </span>
+                      <span className="truncate text-sm font-bold text-slate-200">
+                        {category}
+                      </span>
+                      <span
+                        className={
+                          "shrink-0 rounded-full px-2 py-0.5 text-[11px] font-black " +
+                          (good
+                            ? "bg-emerald-500/10 text-emerald-300"
+                            : "bg-red-500/10 text-red-300")
+                        }
+                      >
+                        {mods.length}
+                      </span>
+                    </span>
+                    {isOpen ? (
+                      <ChevronUp className="h-4 w-4 text-slate-600" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 text-slate-600" />
+                    )}
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex flex-wrap gap-2 border-t border-white/[0.05] px-4 py-4">
+                          {mods.map((mod) => (
+                            <span
+                              key={mod}
+                              className={
+                                "rounded-lg border px-2.5 py-1.5 text-xs font-semibold " +
+                                (good
+                                  ? "border-emerald-400/10 bg-emerald-500/[0.05] text-emerald-200"
+                                  : "border-red-400/10 bg-red-500/[0.05] text-red-200")
+                              }
+                            >
+                              {mod}
+                            </span>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })
+          ) : (
+            <div className="rounded-xl border border-dashed border-white/10 p-8 text-center text-sm text-slate-600">
+              Ничего не найдено
+            </div>
+          )}
+        </div>
+
+        {categories.length > 0 && (
+          <button
+            onClick={() => {
+              const shouldOpen = categories.some((category) => !(open[category] ?? true));
+              setOpen((current) => ({
+                ...current,
+                ...Object.fromEntries(categories.map((category) => [category, shouldOpen])),
+              }));
+            }}
+            className="mt-4 text-xs font-bold text-slate-500 hover:text-white"
+          >
+            {categories.some((category) => !(open[category] ?? true))
+              ? "Раскрыть категории"
+              : "Свернуть категории"}
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <section id="mods" className="scroll-mt-28">
       <div className="mb-8 max-w-3xl">
-        <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-300">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          Проверка модификаций
+        <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-300">
+          <Zap className="h-3.5 w-3.5" /> Проверка модификаций
         </div>
-        <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">Какие моды разрешены?</h2>
-        <p className="mt-3 text-slate-400">Поиск по названию и быстрый просмотр категорий. Перед игрой сверяйтесь с актуальным списком.</p>
+        <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+          Какие моды разрешены?
+        </h2>
+        <p className="mt-3 text-slate-400">
+          Ищите мод по названию и сразу увидите его статус. Список можно скопировать целиком.
+        </p>
       </div>
 
-      <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-3 lg:flex-row">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Найти мод..." className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-slate-600 focus:border-white/15" />
-        </div>
-        <div className="flex gap-2 overflow-auto">
-          {(["all", "allowed", "banned"] as const).map(value => (
-            <button key={value} onClick={() => setTab(value)} className={`whitespace-nowrap rounded-xl border px-4 py-2 text-sm font-bold transition ${tab === value ? "border-white/15 bg-white/[0.09] text-white" : "border-transparent text-slate-500 hover:text-slate-300"}`}>
-              {value === "all" ? `Все · ${totalAllowed + totalBanned}` : value === "allowed" ? `Разрешённые · ${totalAllowed}` : `Запрещённые · ${totalBanned}`}
-            </button>
-          ))}
-        </div>
-      </div>
+      <div className="mb-5 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-3">
+        <div className="flex flex-col gap-3 lg:flex-row">
+          <div className="relative flex-1">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Найти мод: XRay, Baritone, Jade…"
+              className="w-full rounded-xl border border-white/[0.06] bg-black/20 py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-slate-600 focus:border-white/20"
+            />
+          </div>
 
-      <div className="grid gap-5 xl:grid-cols-2">
-        {(tab === "all" || tab === "allowed") && (
-          <ModColumn title="Разрешённые моды" items={filteredAllowed} type="allowed" icons={allowedIcons} />
-        )}
-        {(tab === "all" || tab === "banned") && (
-          <ModColumn title="Запрещённые моды" items={filteredBanned} type="banned" icons={bannedIcons} />
-        )}
-      </div>
-    </section>
-  );
-}
-
-function ModColumn({ title, items, type, icons }: { title: string; items: [string, string[]][]; type: "allowed" | "banned"; icons: Record<string, React.ReactNode> }) {
-  const [open, setOpen] = useState<Record<string, boolean>>({});
-  const good = type === "allowed";
-  return (
-    <div className={`rounded-2xl border p-4 ${good ? "border-emerald-400/10 bg-emerald-500/[0.025]" : "border-red-400/10 bg-red-500/[0.025]"}`}>
-      <div className="mb-4 flex items-center justify-between gap-4 border-b border-white/[0.06] px-2 pb-4">
-        <div className="flex items-center gap-3">
-          <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${good ? "bg-emerald-500/10 text-emerald-300" : "bg-red-500/10 text-red-300"}`}>
-            {good ? <Check className="h-5 w-5" /> : <Ban className="h-5 w-5" />}
-          </span>
-          <div>
-            <h3 className="font-black text-white">{title}</h3>
-            <p className="text-xs text-slate-600">{good ? "Безопасный список" : "Под запретом"}</p>
+          <div className="flex gap-2 overflow-x-auto">
+            {(
+              [
+                ["all", "Все · " + (TOTAL_ALLOWED_MODS + TOTAL_BANNED_MODS)],
+                ["allowed", "Разрешённые · " + TOTAL_ALLOWED_MODS],
+                ["banned", "Запрещённые · " + TOTAL_BANNED_MODS],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                onClick={() => setTab(value)}
+                className={
+                  "whitespace-nowrap rounded-xl border px-4 py-2.5 text-sm font-bold transition " +
+                  (tab === value
+                    ? "border-white/15 bg-white/[0.09] text-white"
+                    : "border-transparent text-slate-500 hover:text-slate-300")
+                }
+              >
+                {label}
+              </button>
+            ))}
           </div>
         </div>
+
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-3 text-xs text-slate-600">
+          <span>
+            <strong className="text-slate-300">
+              {filtered.reduce((sum, item) => sum + item.mods.length, 0)}
+            </strong>{" "}
+            совпадений
+          </span>
+          <button
+            onClick={copyList}
+            className="inline-flex items-center gap-2 font-semibold text-slate-400 hover:text-white"
+          >
+            <Copy className="h-3.5 w-3.5" /> Копировать список
+          </button>
+        </div>
       </div>
-      <div className="space-y-3">
-        {items.length ? items.map(([category, mods]) => {
-          const isOpen = open[category] ?? true;
-          return (
-            <div key={category} className={`rounded-xl border ${good ? "border-emerald-400/10 bg-emerald-500/[0.025]" : "border-red-400/10 bg-red-500/[0.025]"}`}>
-              <button onClick={() => setOpen(v => ({ ...v, [category]: !isOpen }))} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left">
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${good ? "bg-emerald-500/10 text-emerald-300" : "bg-red-500/10 text-red-300"}`}>{icons[category]}</span>
-                  <span className="truncate text-sm font-bold text-slate-200">{category}</span>
-                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-black ${good ? "bg-emerald-500/10 text-emerald-300" : "bg-red-500/10 text-red-300"}`}>{mods.length}</span>
-                </span>
-                {isOpen ? <ChevronUp className="h-4 w-4 text-slate-600" /> : <ChevronDown className="h-4 w-4 text-slate-600" />}
-              </button>
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
-                    <div className="flex flex-wrap gap-2 border-t border-white/[0.05] px-4 py-4">
-                      {mods.map(mod => <span key={mod} className={`rounded-lg border px-2.5 py-1.5 text-xs font-semibold ${good ? "border-emerald-400/10 bg-emerald-500/[0.05] text-emerald-200" : "border-red-400/10 bg-red-500/[0.05] text-red-200"}`}>{mod}</span>)}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+
+      {exact && (
+        <div
+          className={
+            "mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-4 " +
+            (exact.allowed
+              ? "border-emerald-400/10 bg-emerald-500/[0.04]"
+              : "border-red-400/10 bg-red-500/[0.04]")
+          }
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className={
+                "flex h-10 w-10 items-center justify-center rounded-xl " +
+                (exact.allowed
+                  ? "bg-emerald-500/10 text-emerald-300"
+                  : "bg-red-500/10 text-red-300")
+              }
+            >
+              {exact.allowed ? (
+                <Check className="h-5 w-5" />
+              ) : (
+                <Ban className="h-5 w-5" />
+              )}
             </div>
-          );
-        }) : <div className="rounded-xl border border-dashed border-white/10 p-8 text-center text-sm text-slate-600">Ничего не найдено</div>}
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                Точный результат
+              </div>
+              <div className="font-black text-white">{exact.name}</div>
+            </div>
+          </div>
+
+          <div
+            className={
+              "rounded-full px-3 py-1 text-xs font-black " +
+              (exact.allowed
+                ? "bg-emerald-500/10 text-emerald-300"
+                : "bg-red-500/10 text-red-300")
+            }
+          >
+            {exact.allowed ? "✅ Разрешён" : "❌ Запрещён"}
+          </div>
+        </div>
+      )}
+
+      <div className="grid gap-5 xl:grid-cols-2">
+        {(tab === "all" || tab === "allowed") &&
+          renderColumn(
+            "Разрешённые моды",
+            filtered.filter((item) => item.type === "allowed"),
+            true,
+          )}
+        {(tab === "all" || tab === "banned") &&
+          renderColumn(
+            "Запрещённые моды",
+            filtered.filter((item) => item.type === "banned"),
+            false,
+          )}
       </div>
-    </div>
+
+      <div className="mt-4 rounded-xl border border-amber-400/10 bg-amber-500/[0.035] p-4 text-xs leading-5 text-amber-100/65">
+        <span className="font-bold text-amber-200">Важно:</span> перед игрой сверяйтесь с актуальным списком. Наличие похожего мода не означает автоматически, что разрешены все его версии.
+      </div>
+    </section>
   );
 }
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("home");
-  const totalRules = useMemo(() => RULES_DATA.reduce((sum, section) => sum + section.rules.length, 0), []);
+  const [showTop, setShowTop] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target.id) setActive(visible.target.id);
+      },
+      {
+        rootMargin: "-18% 0px -65% 0px",
+        threshold: [0.1, 0.25, 0.5],
+      },
+    );
+
+    ["home", "rules", "mods"].forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    const onScroll = () => setShowTop(window.scrollY > 700);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
     setMenuOpen(false);
-    setActive(id);
   };
+
+  const stats = [
+    [TOTAL_RULES, "пунктов правил", "Поиск, фильтры и ссылки на каждый пункт", BookOpen],
+    [TOTAL_ALLOWED_MODS, "разрешённых модов", "Быстрый поиск по списку", Check],
+    [TOTAL_BANNED_MODS, "запрещённых модов", "Категории и точный статус", Ban],
+  ] as const;
 
   return (
     <div className="min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute left-1/2 top-[-22rem] h-[42rem] w-[70rem] -translate-x-1/2 rounded-full bg-red-500/[0.06] blur-3xl" />
         <div className="absolute left-[-10rem] top-1/3 h-80 w-80 rounded-full bg-orange-500/[0.035] blur-3xl" />
         <div className="absolute right-[-8rem] bottom-0 h-96 w-96 rounded-full bg-emerald-500/[0.03] blur-3xl" />
-        <div className="absolute inset-0 opacity-[0.055]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px)", backgroundSize: "44px 44px" }} />
+        <div
+          className="absolute inset-0 opacity-[0.055]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
         <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-black/20 to-transparent" />
       </div>
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
-          <button onClick={() => scrollTo("home")} className="flex items-center gap-3">
+          <button onClick={() => scrollTo("home")} className="flex items-center gap-3" aria-label="На главную">
             <span className="grid h-9 w-9 place-items-center rounded-xl border border-red-400/15 bg-red-500/[0.09]">
               <ShieldAlert className="h-5 w-5 text-red-300" />
             </span>
@@ -637,28 +1008,90 @@ export default function App() {
             </span>
           </button>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            <button onClick={() => scrollTo("home")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "home" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>Главная</button>
-            <a href={STORE_URL} className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-white">Магазин</a>
-            <button onClick={() => scrollTo("mods")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "mods" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>Моды</button>
-            <button onClick={() => scrollTo("rules")} className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${active === "rules" ? "bg-white/[0.06] text-white" : "text-slate-500 hover:text-white"}`}>Правила</button>
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Основная навигация">
+            {[
+              ["home", "Главная"],
+              ["rules", "Правила"],
+              ["mods", "Моды"],
+            ].map(([id, label]) => (
+              <button
+                key={id}
+                onClick={() => scrollTo(id)}
+                className={
+                  "rounded-lg px-3 py-2 text-sm font-semibold transition " +
+                  (active === id
+                    ? "bg-white/[0.06] text-white"
+                    : "text-slate-500 hover:text-white")
+                }
+              >
+                {label}
+              </button>
+            ))}
+            <a
+              href={STORE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:text-white"
+            >
+              Магазин
+            </a>
           </nav>
 
           <div className="hidden items-center gap-2 sm:flex">
-            <a href={VK_URL} target="_blank" rel="noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">VK</a>
+            <a
+              href={VK_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
+            >
+              VK <ExternalLink className="h-3.5 w-3.5" />
+            </a>
           </div>
 
-          <button onClick={() => setMenuOpen(v => !v)} className="rounded-xl border border-white/10 p-2 text-slate-300 sm:hidden">
+          <button
+            onClick={() => setMenuOpen((value) => !value)}
+            className="rounded-xl border border-white/10 p-2 text-slate-300 sm:hidden"
+            aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+          >
             {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
+
         <AnimatePresence>
           {menuOpen && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="border-t border-white/[0.06] bg-[#07090d] px-4 py-3 sm:hidden">
-              {[['home', 'Главная'], ['mods', 'Моды'], ['rules', 'Правила']].map(([id, label]) => (
-                <button key={id} onClick={() => scrollTo(id)} className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">{label}</button>
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="border-t border-white/[0.06] bg-[#07090d] px-4 py-3 sm:hidden"
+            >
+              {[["home", "Главная"], ["rules", "Правила"], ["mods", "Моды"]].map(([id, label]) => (
+                <button
+                  key={id}
+                  onClick={() => scrollTo(id)}
+                  className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]"
+                >
+                  {label}
+                </button>
               ))}
-              <a href={STORE_URL} onClick={() => setMenuOpen(false)} className="mt-1 block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]">Магазин</a>
+              <a
+                href={STORE_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]"
+              >
+                Магазин
+              </a>
+              <a
+                href={VK_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold text-slate-300 hover:bg-white/[0.05]"
+              >
+                VK
+              </a>
             </motion.div>
           )}
         </AnimatePresence>
@@ -666,57 +1099,63 @@ export default function App() {
 
       <main className="relative mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
         <section id="home" className="scroll-mt-28">
-          <div className="grid items-end gap-10 lg:grid-cols-[1.2fr_.8fr]">
+          <div className="grid items-end gap-10 lg:grid-cols-[1.15fr_.85fr]">
             <div>
               <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.17em] text-slate-400">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
                 Официальный сайт проекта
               </div>
+
               <h1 className="max-w-4xl text-5xl font-black leading-[0.96] tracking-[-0.05em] text-white md:text-7xl lg:text-8xl">
                 {SERVER_NAME}
-                <span className="block bg-gradient-to-r from-red-300 via-orange-200 to-white bg-clip-text text-transparent">{SERVER_MODE}</span>
+                <span className="block bg-gradient-to-r from-red-300 via-orange-200 to-white bg-clip-text text-transparent">
+                  {SERVER_MODE}
+                </span>
               </h1>
+
               <p className="mt-6 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-                Всё необходимое для игрока в одном месте: правила проекта, актуальный список разрешённых и запрещённых модификаций и быстрые ссылки на сообщество.
+                Всё необходимое для игрока в одном месте: правила проекта, список модификаций, быстрый статус сервера и ссылки на сообщество.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href={STORE_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-black text-black transition hover:bg-slate-200">
-                  Магазин <ArrowRight className="h-4 w-4" />
-                </a>
-                <button onClick={() => scrollTo("rules")} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-white transition hover:bg-white/[0.08]">
-                  Правила <ArrowRight className="h-4 w-4 text-slate-500" />
+                <button
+                  onClick={() => scrollTo("mods")}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-black text-black transition hover:-translate-y-0.5 hover:bg-slate-200"
+                >
+                  Проверить моды <ArrowRight className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => scrollTo("rules")}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
+                >
+                  Читать правила <ArrowRight className="h-4 w-4 text-slate-500" />
                 </button>
               </div>
-            </div>
 
-            <div className="rounded-3xl border border-white/[0.07] bg-white/[0.025] p-4 backdrop-blur-md">
-              <div className="rounded-2xl border border-white/[0.06] bg-black/20 p-5">
-                <div className="mb-5 flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-[0.16em] text-slate-600">Server status</span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/10 bg-emerald-500/[0.06] px-2.5 py-1 text-xs font-bold text-emerald-300">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Готов к подключению
-                  </span>
-                </div>
-                <div className="mb-2 text-3xl font-black tracking-tight text-white">{SERVER_IP}</div>
-                <div className="mb-5 text-sm text-slate-600">Minecraft · {SERVER_MODE}</div>
-                <div className="flex flex-wrap gap-2">
-                  <CopyButton value={SERVER_IP} />
-                  <a href={STORE_URL} className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.08] hover:text-white">Магазин</a>
-                </div>
+              <div className="mt-8 inline-flex flex-wrap items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-xs text-slate-500">
+                <Server className="h-3.5 w-3.5" /> {SERVER_IP}
+                <span className="text-slate-700">·</span>
+                Minecraft Java
               </div>
             </div>
+
+            <ServerStatusCard />
           </div>
 
-          <div className="mt-14 grid gap-3 sm:grid-cols-3">
-            {[
-              ["01", `${totalRules} пунктов правил`, "Понятные наказания и примечания"],
-              ["02", `${Object.values(allowedMods).flat().length} разрешённых модов`, "Проверенный список"],
-              ["03", `${Object.values(bannedMods).flat().length} запрещённых модов`, "Актуальные ограничения"],
-            ].map(([num, title, desc]) => (
-              <div key={num} className="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-4">
-                <div className="mb-4 font-mono text-xs font-bold text-red-300">{num}</div>
-                <div className="font-black text-white">{title}</div>
+          <div className="mt-12 grid gap-3 sm:grid-cols-3">
+            {stats.map(([value, title, desc, Icon], index) => (
+              <div
+                key={title}
+                className="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-4 transition hover:border-white/[0.12] hover:bg-white/[0.04]"
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-red-300">
+                    0{index + 1}
+                  </span>
+                  <Icon className="h-4 w-4 text-slate-600" />
+                </div>
+                <div className="text-2xl font-black text-white">{value}</div>
+                <div className="mt-0.5 font-bold text-slate-300">{title}</div>
                 <div className="mt-1 text-sm text-slate-600">{desc}</div>
               </div>
             ))}
@@ -724,46 +1163,50 @@ export default function App() {
         </section>
 
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-
-        <section id="rules" className="scroll-mt-28">
-          <div className="mb-10 max-w-3xl">
-            <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-red-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-              Регламент проекта
-            </div>
-            <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">Правила сервера</h2>
-            <p className="mt-3 text-slate-400">Ознакомьтесь с основными правилами до начала игры. Примечания раскрываются прямо внутри пункта.</p>
-          </div>
-
-          <div className="mb-10 rounded-2xl border border-red-400/10 bg-red-500/[0.035] p-5 text-sm leading-6 text-red-100/75">
-            <div className="mb-1 font-black text-red-200">Важно</div>
-            Данный свод правил может быть изменён в любой момент, и администрация оставляет за собой право не оповещать игроков об изменениях.
-          </div>
-
-          <div className="space-y-16">
-            {RULES_DATA.map(section => <RuleSection key={section.title} section={section} />)}
-          </div>
-        </section>
-
+        <RulesExplorer />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-
-        <ModsSection />
+        <ModsExplorer />
 
         <div className="mt-14 rounded-2xl border border-amber-400/10 bg-amber-500/[0.035] p-5 text-sm leading-6 text-amber-100/70">
-          <div className="mb-1 flex items-center gap-2 font-black text-amber-200"><ShieldAlert className="h-4 w-4" /> Актуальность</div>
+          <div className="mb-1 flex items-center gap-2 font-black text-amber-200">
+            <ShieldAlert className="h-4 w-4" /> Актуальность
+          </div>
           Статья может быть отредактирована администрацией без уведомления пользователей. Перед запуском клиента сверяйтесь с актуальным списком.
         </div>
       </main>
 
       <footer className="relative border-t border-white/[0.06]">
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between md:px-6">
-          <div>© {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}</div>
-          <div className="flex flex-wrap gap-4">
-            <a href={VK_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">VK</a>
-            <a href={STORE_URL} className="transition hover:text-white">Магазин</a>
+          <div>
+            © {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <CopyButton value={SERVER_IP} label="IP сервера" icon={<Server className="h-4 w-4" />} />
+            <a href={VK_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
+              VK
+            </a>
+            <a href={STORE_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
+              Магазин
+            </a>
           </div>
         </div>
       </footer>
+
+      <AnimatePresence>
+        {showTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            onClick={() => scrollTo("home")}
+            className="fixed bottom-5 right-5 z-40 rounded-xl border border-white/10 bg-[#0b0e13]/90 p-3 text-slate-300 shadow-xl backdrop-blur-md transition hover:bg-white/[0.08] hover:text-white"
+            aria-label="Наверх"
+            title="Наверх"
+          >
+            <ChevronUp className="h-5 w-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
