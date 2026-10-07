@@ -30,6 +30,7 @@ jobs:
             echo "Background already stored."
           else
             git commit -m "Add uploaded HardlyWorld background"
+            git pull --rebase origin main
             git push
           fi
 
