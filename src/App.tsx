@@ -1119,13 +1119,13 @@ export default function App() {
     <div className="relative min-h-screen bg-[#07090d] text-white">
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         <img
-          src="/hardlyworld-bg.svg?v=4"
+          src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/92096d1d-fbe3-4655-860b-dd327a4f23b5.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWY0MDMxZjdhMzE4YzcyZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTU0MTIzOX0.azwWlj7dpwMykpW30t2cHG_1ss45lqZBpFyeaK3XMsY"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.82]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#07090d]/20 via-[#07090d]/10 to-[#07090d]/40" />
-        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-black/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#07090d]/10 via-transparent to-[#07090d]/20" />
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-black/20 to-transparent" />
       </div>
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
