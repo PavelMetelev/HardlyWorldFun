@@ -167,3 +167,35 @@ input::placeholder {
     border-radius: 1.5rem;
   }
 }
+
+
+/* Final readability guard: no page-content transparency or filters. */
+.site-main,
+.site-main * {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.site-main {
+  color: #ffffff !important;
+}
+
+.site-main h1,
+.site-main h2,
+.site-main h3,
+.site-main h4,
+.site-main p,
+.site-main li,
+.site-main label,
+.site-main strong,
+.site-main span,
+.site-main button,
+.site-main a {
+  color: #f8fafc !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Inputs keep their native white text. */
+.site-main input {
+  color: #ffffff !important;
+}
