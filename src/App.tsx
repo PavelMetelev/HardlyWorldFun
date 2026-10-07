@@ -1116,17 +1116,16 @@ export default function App() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden [contain:paint]" aria-hidden="true">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.72]"
-          style={{ backgroundImage: "url('/hardlyworld-bg.svg')" }}
+    <div className="relative min-h-screen bg-[#07090d] text-white">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <img
+          src="/hardlyworld-bg.svg?v=4"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.92]"
         />
-        <div className="absolute inset-0 bg-[#07090d]/18" />
-        <div className="absolute left-1/2 top-[-22rem] h-[42rem] w-[70rem] -translate-x-1/2 rounded-full bg-red-500/[0.04] blur-3xl" />
-        <div className="absolute left-[-10rem] top-1/3 h-80 w-80 rounded-full bg-orange-500/[0.035] blur-3xl" />
-        <div className="absolute right-[-8rem] bottom-0 h-96 w-96 rounded-full bg-emerald-500/[0.03] blur-3xl" />
-        <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#07090d]/20 via-[#07090d]/10 to-[#07090d]/40" />
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-black/35 to-transparent" />
       </div>
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
@@ -1230,7 +1229,7 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      <main className="relative mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
         <section id="home" className="scroll-mt-28">
           <div className="grid items-end gap-10 lg:grid-cols-[1.15fr_.85fr]">
             <div>
@@ -1314,7 +1313,7 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="relative border-t border-white/[0.06]">
+      <footer className="relative z-10 border-t border-white/[0.06]">
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between md:px-6">
           <div>
             © {new Date().getFullYear()} {SERVER_NAME} — {SERVER_MODE}
