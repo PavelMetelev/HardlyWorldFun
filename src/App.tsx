@@ -1121,9 +1121,12 @@ export default function App() {
             className="group flex items-center gap-3.5 text-left"
             aria-label="На главную"
           >
-            <span className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-[13px] border border-red-300/20 bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent shadow-[0_0_24px_rgba(248,113,113,0.08)]">
-              <span className="absolute inset-[5px] rounded-[9px] border border-red-300/10" />
-              <span className="relative font-black tracking-[-0.08em] text-red-200">HW</span>
+            <span className="relative grid h-10 w-14 shrink-0 place-items-center">
+              <img
+                src="/hardlyworld-logo.svg"
+                alt="HW"
+                className="h-10 w-14 object-contain drop-shadow-[0_0_12px_rgba(248,113,113,0.14)] transition duration-200 group-hover:scale-[1.04]"
+              />
             </span>
             <span className="leading-none">
               <span className="block text-[15px] font-black tracking-[-0.02em] text-white transition group-hover:text-red-50">
