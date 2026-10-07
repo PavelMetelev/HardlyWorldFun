@@ -1,4 +1,5 @@
 import React from "react";
+import { Ban, Crown, MessageSquare, UserCheck } from "lucide-react";
 export type Rule = {
   id: string;
   text: string;
@@ -18,7 +19,7 @@ export const SERVER_IP = "mc.HardlyWorld.fun";
 export const VK_URL = "https://vk.ru/hardly_world_anarchy";
 export const STORE_URL = "https://hardlyworld.fun/";
 
-const RULES_DATA: Section[] = [
+export const RULES_DATA: Section[] = [
   {
     title: 'Правила Чата',
     icon: <MessageSquare className="w-6 h-6" />,
@@ -222,7 +223,7 @@ const RULES_DATA: Section[] = [
 
 
 
-export const allowedMods = {
+export export const ALLOWED_MODS = {
   "Кликеры, макросы и другие моды": [
     "TapeMouse",
     "AutoClanInvest",
@@ -285,7 +286,7 @@ export const allowedMods = {
   ],
 };
 
-export const bannedMods = {
+export export const BANNED_MODS = {
   "Моды для записи игры": [
     "ReplayMod",
     "IsometricRender",
@@ -375,5 +376,5 @@ export const bannedMods = {
 };
 
 export const TOTAL_RULES = RULES_DATA.reduce((sum, section) => sum + section.rules.length, 0);
-export const TOTAL_ALLOWED_MODS = Object.values(allowedMods).flat().length;
-export const TOTAL_BANNED_MODS = Object.values(bannedMods).flat().length;
+export const TOTAL_ALLOWED_MODS = Object.values(ALLOWED_MODS).flat().length;
+export const TOTAL_BANNED_MODS = Object.values(BANNED_MODS).flat().length;
