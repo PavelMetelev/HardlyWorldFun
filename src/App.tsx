@@ -66,6 +66,54 @@ function sectionAnchor(title: string) {
   return "rule-section-" + title.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "");
 }
 
+const SITE_PHOTOS = [
+  {
+    src: "https://images.unsplash.com/photo-1509010008-a77006ce0b63?auto=format&fit=crop&fm=jpg&q=82&w=1600",
+    alt: "Замок на фоне гор и моря",
+    title: "Мир HardlyWorld",
+    text: "Атмосфера большого мира, куда хочется зайти и остаться.",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1672595174995-c990086eadde?auto=format&fit=crop&fm=jpg&q=82&w=1600",
+    alt: "Средневековый замок и горы",
+    title: "Исследуй",
+    text: "Горы, крепости и новые маршруты — твоя история начинается здесь.",
+  },
+];
+
+function WorldGallery() {
+  return (
+    <section aria-label="Атмосфера HardlyWorld">
+      <div className="mb-7 max-w-2xl">
+        <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-300">Мир HardlyWorld</div>
+        <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Больше атмосферы. Меньше пустоты.</h2>
+        <p className="mt-2 text-sm leading-6 text-slate-500">Визуальная пауза между разделами — чтобы сайт ощущался как портал игрового мира, а не просто список правил.</p>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        {SITE_PHOTOS.map((photo, index) => (
+          <figure key={photo.src} className="group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-black/30">
+            <div className="aspect-[16/9] overflow-hidden">
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#05080d]/90 via-[#05080d]/20 to-transparent" />
+            </div>
+            <figcaption className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+              <div className="mb-1 text-lg font-black text-white md:text-xl">{photo.title}</div>
+              <p className="max-w-xl text-sm leading-6 text-slate-300/80">{photo.text}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
   const steps = [
     ["01", "Скопируй IP", "Нажми «Копировать IP» и вставь адрес в список серверов."],
@@ -1143,6 +1191,7 @@ export default function App() {
           <nav className="hidden items-center gap-1 md:flex" aria-label="Основная навигация">
             {[
               ["home", "Главная"],
+              ["start", "Как играть"],
               ["rules", "Правила"],
               ["mods", "Моды"],
             ].map(([id, label]) => (
@@ -1300,6 +1349,8 @@ export default function App() {
 
         <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <GettingStarted onNavigate={scrollTo} />
+        <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+        <WorldGallery />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <RulesExplorer />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
