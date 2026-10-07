@@ -16,24 +16,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Store uploaded HardlyWorld artwork locally
+      - name: Use local HardlyWorld artwork
         if: github.event_name == 'push'
         run: |
           mkdir -p public
-          curl -L --fail --retry 3 --retry-all-errors             "https://d2jqrm6oza8nb6.cloudfront.net/datasets/38b0fdd8-0f3f-40dc-a8ce-1d92d1b8b846.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZmFjNDJhYzJhYTU5NTY0ZiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUwMjQwMn0.qpuXzhiN184HXUnn8hTcdDZKMHKUuMsMUe1eeT1GP0g"             -o public/hardlyworld-bg.png
-          test -s public/hardlyworld-bg.png
-          file public/hardlyworld-bg.png
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -f public/hardlyworld-bg.jpg
-          git add public/hardlyworld-bg.png public/hardlyworld-bg.jpg
-          if git diff --cached --quiet; then
-            echo "Background already stored."
-          else
-            git commit -m "Add uploaded HardlyWorld background"
-            git pull --rebase origin main
-            git push
+          if [ ! -s public/hardlyworld-bg.png ]; then
+            echo "Background asset is missing; add public/hardlyworld-bg.png to the repository."
+            exit 1
           fi
+          file public/hardlyworld-bg.png
 
       - uses: actions/setup-node@v7
         with:
