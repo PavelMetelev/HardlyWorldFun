@@ -66,54 +66,6 @@ function sectionAnchor(title: string) {
   return "rule-section-" + title.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "");
 }
 
-const SITE_PHOTOS = [
-  {
-    src: "https://images.unsplash.com/photo-1509010008-a77006ce0b63?auto=format&fit=crop&fm=jpg&q=82&w=1600",
-    alt: "Замок на фоне гор и моря",
-    title: "Мир HardlyWorld",
-    text: "Атмосфера большого мира, куда хочется зайти и остаться.",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1672595174995-c990086eadde?auto=format&fit=crop&fm=jpg&q=82&w=1600",
-    alt: "Средневековый замок и горы",
-    title: "Исследуй",
-    text: "Горы, крепости и новые маршруты — твоя история начинается здесь.",
-  },
-];
-
-function WorldGallery() {
-  return (
-    <section aria-label="Атмосфера HardlyWorld">
-      <div className="mb-7 max-w-2xl">
-        <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-300">Мир HardlyWorld</div>
-        <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Больше атмосферы. Меньше пустоты.</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-500">Визуальная пауза между разделами — чтобы сайт ощущался как портал игрового мира, а не просто список правил.</p>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        {SITE_PHOTOS.map((photo, index) => (
-          <figure key={photo.src} className="group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-black/30">
-            <div className="aspect-[16/9] overflow-hidden">
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                loading={index === 0 ? "eager" : "lazy"}
-                decoding="async"
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#05080d]/90 via-[#05080d]/20 to-transparent" />
-            </div>
-            <figcaption className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-              <div className="mb-1 text-lg font-black text-white md:text-xl">{photo.title}</div>
-              <p className="max-w-xl text-sm leading-6 text-slate-300/80">{photo.text}</p>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
   const steps = [
     ["01", "Скопируй IP", "Нажми «Копировать IP» и вставь адрес в список серверов."],
@@ -130,7 +82,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
           <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Как начать играть</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Четыре шага от установки клиента до первого входа на сервер.</p>
         </div>
-        <div className="inline-flex items-center gap-2 self-start rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-400">
+        <div className="inline-flex items-center gap-2 self-start rounded-xl border border-white/[0.07] bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-400">
           <Server className="h-3.5 w-3.5" /> {SERVER_VERSION} · {SERVER_MODE}
         </div>
       </div>
@@ -297,7 +249,7 @@ function ServerStatusCard() {
 
   return (
     <div className="rounded-3xl border border-white/[0.07] bg-white/[0.025] p-3.5 shadow-2xl shadow-black/20 backdrop-blur-md">
-      <div className="rounded-2xl border border-white/[0.06] bg-black/20 p-5 md:p-6">
+      <div className="rounded-2xl border border-white/[0.06] bg-black/30 p-5 md:p-6">
         <div className="mb-5 flex items-center justify-between gap-3">
           <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
             Статус сервера
@@ -1165,16 +1117,15 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none absolute inset-x-0 top-16 z-0 overflow-hidden" aria-hidden="true">
-        <div className="mx-auto w-full max-w-[1920px]" style={{ aspectRatio: "16 / 9" }}>
-          <img
-            src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/92096d1d-fbe3-4655-860b-dd327a4f23b5.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWY0MDMxZjdhMzE4YzcyZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTU0MTIzOX0.azwWlj7dpwMykpW30t2cHG_1ss45lqZBpFyeaK3XMsY&v=20261007"
-            alt=""
-            aria-hidden="true"
-            className="block h-full w-full object-cover object-center opacity-[0.82]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#07090d]/20 via-transparent to-[#07090d]/25" />
-        </div>
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <img
+          src="https://images.unsplash.com/photo-1509010008-a77006ce0b63?auto=format&fit=crop&fm=jpg&q=86&w=2400"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#05080d]/38" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/28 via-transparent to-[#05080d]/42" />
       </div>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
@@ -1350,7 +1301,6 @@ export default function App() {
         <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <GettingStarted onNavigate={scrollTo} />
         <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-        <WorldGallery />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <RulesExplorer />
         <div className="my-24 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
