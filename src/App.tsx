@@ -1221,81 +1221,83 @@ export default function App() {
 
       <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
         <section id="home" className="relative isolate scroll-mt-28">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden rounded-b-[2.5rem]" aria-hidden="true">
-            <div className="relative mx-auto aspect-[16/9] w-full max-w-[1920px]">
+          <div className="pointer-events-none absolute left-1/2 top-0 z-0 w-screen -translate-x-1/2 overflow-hidden" aria-hidden="true">
+            <div className="relative aspect-[16/9] w-full overflow-hidden">
               <img
-                src="/hardlyworld-bg.png?v=2"
+                src="/hardlyworld-bg.png?v=3"
                 alt=""
                 aria-hidden="true"
-                className="block h-full w-full object-cover object-center"
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/20 via-[#05080d]/38 to-[#07090d]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/12 via-[#05080d]/28 to-[#07090d]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/42 via-transparent to-[#07090d]/20" />
             </div>
           </div>
-          <div className="relative z-10 grid items-end gap-10 lg:grid-cols-[1.15fr_.85fr]">
-            <div>
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.17em] text-slate-400">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-                Официальный сайт проекта
-              </div>
 
-              <h1 className="max-w-4xl text-5xl font-black leading-[0.96] tracking-[-0.05em] text-white md:text-7xl lg:text-8xl">
-                {SERVER_NAME}
-                <span className="block bg-gradient-to-r from-red-300 via-orange-200 to-white bg-clip-text text-transparent">
-                  {SERVER_MODE}
-                </span>
-              </h1>
-
-              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
-                Анархический Minecraft-проект с понятными правилами, быстрым поиском модов и живым статусом сервера. Всё нужное для входа и игры — в одном месте.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <CopyButton value={SERVER_IP} label="Скопировать IP" />
-                <button
-                  onClick={() => scrollTo("start")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
-                >
-                  Как начать играть <ArrowRight className="h-4 w-4 text-slate-500" />
-                </button>
-                <button
-                  onClick={() => scrollTo("mods")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 font-bold text-slate-300 transition hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-white"
-                >
-                  Проверить моды
-                </button>
-              </div>
-
-              <div className="mt-7 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-400">
-                  <Server className="h-3.5 w-3.5" /> {SERVER_IP}
-                </span>
-                <span className="rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-400">
-                  Minecraft Java · {SERVER_VERSION}
-                </span>
-              </div>
-            </div>
-
-            <ServerStatusCard />
-          </div>
-
-          <div className="relative z-10 mt-12 grid gap-3 sm:grid-cols-3">
-            {stats.map(([value, title, desc, Icon], index) => (
-              <div
-                key={title}
-                className="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-4 transition hover:border-white/[0.12] hover:bg-white/[0.04]"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-red-300">
-                    0{index + 1}
-                  </span>
-                  <Icon className="h-4 w-4 text-slate-600" />
+          <div className="relative z-10">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
+              <div>
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.17em] text-slate-300 backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                  Официальный сайт проекта
                 </div>
-                <div className="text-2xl font-black text-white">{value}</div>
-                <div className="mt-0.5 font-bold text-slate-300">{title}</div>
-                <div className="mt-1 text-sm text-slate-600">{desc}</div>
+
+                <h1 className="max-w-4xl text-5xl font-black leading-[0.96] tracking-[-0.05em] text-white drop-shadow-2xl md:text-7xl lg:text-8xl">
+                  {SERVER_NAME}
+                  <span className="block bg-gradient-to-r from-red-300 via-orange-200 to-white bg-clip-text text-transparent">
+                    {SERVER_MODE}
+                  </span>
+                </h1>
+
+                <p className="mt-6 max-w-2xl text-base leading-7 text-slate-200/85 drop-shadow-lg md:text-lg">
+                  Анархический Minecraft-проект с понятными правилами, быстрым поиском модов и живым статусом сервера. Всё нужное для входа и игры — в одном месте.
+                </p>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <CopyButton value={SERVER_IP} label="Скопировать IP" />
+                  <button
+                    onClick={() => scrollTo("start")}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-black/25 px-5 py-3 font-bold text-white backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-black/35"
+                  >
+                    Как начать играть <ArrowRight className="h-4 w-4 text-slate-400" />
+                  </button>
+                  <button
+                    onClick={() => scrollTo("mods")}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-black/25 px-5 py-3 font-bold text-slate-200 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-black/35 hover:text-white"
+                  >
+                    Проверить моды
+                  </button>
+                </div>
+
+                <div className="mt-7 flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-xs font-bold text-slate-200 backdrop-blur-md">
+                    <Server className="h-3.5 w-3.5" /> {SERVER_IP}
+                  </span>
+                  <span className="rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-xs font-bold text-slate-200 backdrop-blur-md">
+                    Minecraft Java · {SERVER_VERSION}
+                  </span>
+                </div>
               </div>
-            ))}
+
+              <ServerStatusCard />
+            </div>
+
+            <div className="mt-12 grid gap-3 sm:grid-cols-3">
+              {stats.map(([value, title, desc, Icon], index) => (
+                <div
+                  key={title}
+                  className="rounded-2xl border border-white/[0.09] bg-black/30 p-4 shadow-xl shadow-black/20 backdrop-blur-md transition hover:border-white/[0.15] hover:bg-black/35"
+                >
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-red-300">0{index + 1}</span>
+                    <Icon className="h-4 w-4 text-slate-300/60" />
+                  </div>
+                  <div className="text-2xl font-black text-white">{value}</div>
+                  <div className="mt-0.5 font-bold text-slate-200">{title}</div>
+                  <div className="mt-1 text-sm text-slate-300/60">{desc}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
