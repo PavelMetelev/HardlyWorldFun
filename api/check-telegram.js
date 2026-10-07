@@ -28,11 +28,27 @@ export default async function handler(req, res) {
       });
     }
 
+    const sendResponse = await fetch(
+      "https://api.telegram.org/bot" + token + "/sendMessage",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: "✅ Тест HardlyWorld Support: Telegram-связь с сайтом работает.",
+        }),
+      },
+    );
+    const sendData = await sendResponse.json();
+
     return res.status(200).json({
       ok: true,
       chat_type: data?.result?.type,
       username: data?.result?.username ?? null,
       first_name: data?.result?.first_name ?? null,
+      send_ok: sendData?.ok === true,
+      send_error_code: sendData?.error_code ?? null,
+      send_description: sendData?.description ?? null,
     });
   } catch {
     return res.status(502).json({ ok: false, error: "Telegram API unavailable." });
