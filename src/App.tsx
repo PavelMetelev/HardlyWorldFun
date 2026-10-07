@@ -1117,17 +1117,17 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#07090d] text-white">
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <img
-          src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/92096d1d-fbe3-4655-860b-dd327a4f23b5.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWY0MDMxZjdhMzE4YzcyZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTU0MTIzOX0.azwWlj7dpwMykpW30t2cHG_1ss45lqZBpFyeaK3XMsY"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.82]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#07090d]/10 via-transparent to-[#07090d]/20" />
-        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-black/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-16 z-0 overflow-hidden" aria-hidden="true">
+        <div className="mx-auto w-full max-w-[1920px]" style={{ aspectRatio: "16 / 9" }}>
+          <img
+            src="https://d2jqrm6oza8nb6.cloudfront.net/datasets/92096d1d-fbe3-4655-860b-dd327a4f23b5.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWY0MDMxZjdhMzE4YzcyZCIsImJ1Y2tldCI6InJ1ndy1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTU0MTIzOX0.azwWlj7dpwMykpW30t2cHG_1ss45lqZBpFyeaK3XMsY"
+            alt=""
+            aria-hidden="true"
+            className="block h-full w-full object-cover object-center opacity-[0.82]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07090d]/20 via-transparent to-[#07090d]/25" />
+        </div>
       </div>
-
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
           <button onClick={() => scrollTo("home")} className="flex items-center gap-3" aria-label="На главную">
