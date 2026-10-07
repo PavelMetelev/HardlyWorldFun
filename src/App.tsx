@@ -1125,7 +1125,7 @@ export default function App() {
               <img
                 src="/hardlyworld-logo.svg"
                 alt="HW"
-                className="h-10 w-14 object-contain drop-shadow-[0_0_12px_rgba(248,113,113,0.14)] transition duration-200 group-hover:scale-[1.04]"
+                className="h-11 w-16 object-contain drop-shadow-[0_0_16px_rgba(248,90,55,0.24)] transition duration-200 group-hover:scale-[1.04]"
               />
             </span>
             <span className="leading-none">
