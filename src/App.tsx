@@ -1278,7 +1278,6 @@ export default function App() {
 
             <ServerStatusCard />
           </div>
-          </div>
 
           <div className="mt-12 grid gap-3 sm:grid-cols-3">
             {stats.map(([value, title, desc, Icon], index) => (
