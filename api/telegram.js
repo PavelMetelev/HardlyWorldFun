@@ -65,6 +65,7 @@ async function handleMessage(token, message) {
   const text = String(message.text ?? "").trim();
 
   if (!chatId) return;
+  console.log("HardlyWorld Telegram incoming chat:", chatId, "type:", message.chat?.type, "username:", message.from?.username || "");
 
   if (text === "/start" || text === "/help") {
     await telegram(token, "sendMessage", {
