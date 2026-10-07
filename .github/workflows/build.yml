@@ -26,19 +26,57 @@ jobs:
           fi
           file public/hardlyworld-bg.png
 
-      - name: Sync exact uploaded HW favicon
+      - name: Tight crop favicon artwork
         if: github.event_name == 'push'
         run: |
-          mkdir -p public
-          curl -L --fail --retry 3 --retry-all-errors "https://d2jqrm6oza8nb6.cloudfront.net/datasets/f0019d7b-2de4-4cdb-b91f-216d3aa401a0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOTUxMWFlNmJkNTcyYjNiZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTUzMzU0N30.gKiKZBP67HBEc32xRHXibRy0WIiCldm623Gej8icek" -o public/favicon.png
-          file public/favicon.png
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          path = Path("public/favicon.png")
+          img = Image.open(path).convert("RGBA")
+
+          alpha = img.getchannel("A")
+          bbox = alpha.getbbox()
+
+          # The source logo has transparent padding. Crop to the visible artwork
+          # so the same 16x16 browser slot shows a much larger HW emblem.
+          if bbox:
+              left, top, right, bottom = bbox
+              pad = max(1, int(max(right - left, bottom - top) * 0.02))
+              left = max(0, left - pad)
+              top = max(0, top - pad)
+              right = min(img.width, right + pad)
+              bottom = min(img.height, bottom + pad)
+              img = img.crop((left, top, right, bottom))
+
+          # Keep transparency and make the artwork fill the favicon canvas.
+          box = 64
+          margin = 2
+          inner = box - margin * 2
+          scale = min(inner / img.width, inner / img.height)
+          resized = img.resize(
+              (max(1, round(img.width * scale)), max(1, round(img.height * scale))),
+              Image.Resampling.LANCZOS,
+          )
+
+          canvas = Image.new("RGBA", (box, box), (0, 0, 0, 0))
+          x = (box - resized.width) // 2
+          y = (box - resized.height) // 2
+          canvas.alpha_composite(resized, (x, y))
+          canvas.save(path, format="PNG", optimize=True)
+
+          print("Saved cropped favicon:", path)
+          PY
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/favicon.png
           if git diff --cached --quiet; then
-            echo "Favicon already up to date."
+            echo "Favicon already tightly cropped."
           else
-            git commit -m "Update HardlyWorld favicon"
+            git commit -m "Tight crop HW favicon"
             git pull --rebase origin main
             git push
           fi
