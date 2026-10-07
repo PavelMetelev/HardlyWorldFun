@@ -1116,15 +1116,7 @@ export default function App() {
   ] as const;
 
   return (
-    <div
-      className="relative min-h-screen bg-[#07090d] text-white"
-      style={{
-        backgroundImage: "linear-gradient(rgba(5, 8, 13, 0.42), rgba(5, 8, 13, 0.48)), url('/hardlyworld-bg.png')",
-        backgroundPosition: "center center",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
-    >
+    <div className="relative min-h-screen bg-[#07090d] text-white">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#07090d]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
           <button onClick={() => scrollTo("home")} className="flex items-center gap-3" aria-label="На главную">
@@ -1228,8 +1220,19 @@ export default function App() {
       </header>
 
       <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 md:px-6 md:pt-36">
-        <section id="home" className="scroll-mt-28">
-          <div className="grid items-end gap-10 lg:grid-cols-[1.15fr_.85fr]">
+        <section id="home" className="relative isolate scroll-mt-28">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden rounded-b-[2.5rem]" aria-hidden="true">
+            <div className="mx-auto aspect-[16/9] w-full max-w-[1920px]">
+              <img
+                src="/hardlyworld-bg.png?v=2"
+                alt=""
+                aria-hidden="true"
+                className="block h-full w-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#05080d]/20 via-[#05080d]/38 to-[#07090d]" />
+            </div>
+          </div>
+          <div className="relative z-10 grid items-end gap-10 lg:grid-cols-[1.15fr_.85fr]">
             <div>
               <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.17em] text-slate-400">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
@@ -1276,7 +1279,7 @@ export default function App() {
             <ServerStatusCard />
           </div>
 
-          <div className="mt-12 grid gap-3 sm:grid-cols-3">
+          <div className="relative z-10 mt-12 grid gap-3 sm:grid-cols-3">
             {stats.map(([value, title, desc, Icon], index) => (
               <div
                 key={title}
@@ -1295,6 +1298,7 @@ export default function App() {
             ))}
           </div>
         </section>
+
 
         <div className="my-20 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
         <GettingStarted onNavigate={scrollTo} />
