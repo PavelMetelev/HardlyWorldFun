@@ -76,7 +76,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
 
   return (
     <section id="start" className="scroll-mt-28 rounded-[2rem] border border-white/[0.09] bg-transparent p-5 md:p-7">
-      <div className="mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+      <div className="relative z-30 mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
           <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-300">Быстрый старт</div>
           <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">Как начать играть</h2>
@@ -87,7 +87,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="relative z-20 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map(([num, title, text], index) => (
           <div key={num} className="relative rounded-2xl border border-white/[0.10] bg-transparent p-5">
             {index < steps.length - 1 && (
@@ -103,7 +103,7 @@ function GettingStarted({ onNavigate }: { onNavigate: (id: string) => void }) {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.10] bg-transparent p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative z-20 mt-4 flex flex-col gap-3 rounded-2xl border border-white/[0.10] bg-transparent p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">Адрес сервера</div>
           <div className="mt-1 break-all font-mono text-sm font-bold text-white">{SERVER_IP}</div>
