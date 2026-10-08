@@ -13,7 +13,10 @@ export default async function handler(req, res) {
     return res.status(404).json({ error: "Not found." });
   }
 
-  const webhookUrl = "https://hardly-world-fun.vercel.app/api/telegram";
+  const bypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  if (!bypassSecret) return res.status(503).json({ error: "Vercel protection bypass is not configured." });
+
+  const webhookUrl = "https://hardly-world-fun.vercel.app/api/telegram?x-vercel-protection-bypass=" + encodeURIComponent(bypassSecret);
 
   try {
     const response = await fetch("https://api.telegram.org/bot" + token + "/setWebhook", {
