@@ -28,6 +28,12 @@ export default async function handler(req, res) {
       });
     }
 
+    const webhookResponse = await fetch(
+      "https://api.telegram.org/bot" + token + "/getWebhookInfo",
+      { cache: "no-store" },
+    );
+    const webhookData = await webhookResponse.json();
+
     const sendResponse = await fetch(
       "https://api.telegram.org/bot" + token + "/sendMessage",
       {
@@ -49,6 +55,8 @@ export default async function handler(req, res) {
       send_ok: sendData?.ok === true,
       send_error_code: sendData?.error_code ?? null,
       send_description: sendData?.description ?? null,
+      webhook_ok: webhookData?.ok === true,
+      webhook: webhookData?.result ?? null,
     });
   } catch {
     return res.status(502).json({ ok: false, error: "Telegram API unavailable." });
