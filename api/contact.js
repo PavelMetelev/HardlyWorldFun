@@ -161,6 +161,32 @@ function getIp(req) {
 }
 
 export default async function handler(req, res) {
+  if (req.method === "GET") {
+    const setupKey = process.env.TELEGRAM_SETUP_KEY;
+    if (!setupKey || String(req.query?.status || "") !== setupKey) {
+      return res.status(404).json({ error: "Not found." });
+    }
+
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (!token) return res.status(503).json({ error: "Telegram is not configured." });
+
+    try {
+      const response = await fetch(
+        "https://api.telegram.org/bot" + token + "/getWebhookInfo",
+        { cache: "no-store" },
+      );
+      const data = await response.json();
+      return res.status(response.ok ? 200 : 502).json({
+        ok: data?.ok === true,
+        result: data?.result ?? null,
+        error_code: data?.error_code ?? null,
+        description: data?.description ?? null,
+      });
+    } catch {
+      return res.status(502).json({ error: "Telegram API unavailable." });
+    }
+  }
+
   res.setHeader("Cache-Control", "no-store, max-age=0");
 
   if (req.method !== "POST") {
